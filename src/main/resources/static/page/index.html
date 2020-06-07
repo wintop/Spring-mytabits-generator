@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="css/main.css">
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.4.1/dist/jquery.min.js"></script>
+    <title>Spring-Mybatis</title>
+</head>
+<body>
+<div>
+    <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
+        <li class="nav-item">
+            <a class="nav-link active" id="pills-home-tab" data-toggle="pill" href="#pills-profile" role="tab" aria-controls="pills-profile" aria-selected="true">配置信息</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" id="pills-profile-tab" data-toggle="pill" href="#pills-tables" role="tab" aria-controls="pills-tables" aria-selected="false">表数据及代码生成</a>
+        </li>
+    </ul>
+    <div class="tab-content" id="pills-tabContent">
+        <div class="tab-pane fade show active" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab">
+            <form class="card" id="mybatis_config" action="/setConfig" method="post">
+                <div class="card-header">数据库配置</div>
+                <div class="form-group row card-body">
+                    <label for="url" class="col-sm-2 col-form-label">数据库地址</label>
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control-plaintext" name="url" id="url" value="jdbc:mysql://localhost:3306/my_test?serverTimezone=CTT&useUnicode=true&characterEncoding=utf-8">
+                        <small id="urlHelp" class="form-text text-muted">现在只支持MySql一种数据库</small>
+                    </div>
+                    <label for="user" class="col-sm-2 col-form-label">用户名称</label>
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control-plaintext" name="user" id="user" value="root">
+                    </div>
+                    <label for="password" class="col-sm-2 col-form-label">密码</label>
+                    <div class="col-sm-10">
+                        <input type="password" class="form-control-plaintext" name="password" id="password" value="123456">
+                    </div>
+                    <label for="table_cat" class="col-sm-2 col-form-label">数据库名称</label>
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control-plaintext" name="tableCat" id="table_cat" value="my_test">
+                    </div>
+                </div>
+                <div class="card-header">代码目录配置</div>
+                <div class="form-group row card-body">
+                    <label for="root_dir" class="col-sm-2 mb-2 col-form-label">项目目录</label>
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control" name="rootDir" id="root_dir" value="E:\mysrc\java\test">
+                    </div>
+                    <label for="package_name" class="col-sm-2 mb-2 col-form-label">项目的groupId</label>
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control" name="packageName" id="package_name" value="net.hyjuki.demo">
+                    </div>
+                </div>
+                <div class="card-header">请选择要生成的文件及目录</div>
+                <div class="form-group row card-body">
+                    <div class="input-group mb-2 col-sm-12">
+                        <div class="input-group-prepend">
+                            <div class="input-group-text">
+                                <input type="checkbox" name="fileDir" value="xml" checked>
+                            </div>
+                        </div>
+                        <span class="input-group-text col-sm-2">MapperXML文件目录</span>
+                        <input type="text" aria-label="MapperXML文件目录" name="xmlDir" class="form-control" value="resources/config/mapper">
+                    </div>
+                    <div class="input-group mb-2 col-sm-12">
+                        <div class="input-group-prepend">
+                            <div class="input-group-text">
+                                <input type="checkbox" name="fileDir" value="model" checked>
+                            </div>
+                        </div>
+                        <span class="input-group-text col-sm-2">Model文件目录</span>
+                        <input type="text" aria-label="Model文件目录" name="modelDir" class="form-control" value="model">
+                    </div>
+                    <div class="input-group mb-2 col-sm-12">
+                        <div class="input-group-prepend">
+                            <div class="input-group-text">
+                                <input type="checkbox" name="fileDir" value="dao" checked>
+                            </div>
+                        </div>
+                        <span class="input-group-text col-sm-2">Respiratory文件目录</span>
+                        <input type="text" aria-label="Respiratory文件目录" name="daoDir" class="form-control" value="dao">
+                    </div>
+                    <div class="input-group mb-2 col-sm-12">
+                        <div class="input-group-prepend">
+                            <div class="input-group-text">
+                                <input type="checkbox" name="fileDir" value="service" checked>
+                            </div>
+                        </div>
+                        <span class="input-group-text col-sm-2">Service文件目录</span>
+                        <input type="text" aria-label="Service文件目录" name="serviceDir" class="form-control" value="service">
+                    </div>
+                    <div class="input-group mb-2 col-sm-12">
+                        <div class="input-group-prepend">
+                            <div class="input-group-text">
+                                <input type="checkbox" name="fileDir" value="impl" checked>
+                            </div>
+                        </div>
+                        <span class="input-group-text col-sm-2">Service Impl文件目录</span>
+                        <input type="text" aria-label="Service Impl文件目录" name="implDir" class="form-control" value="service/impl">
+                    </div>
+                </div>
+                <div class="card-header">要生成的方法名称</div>
+                <div class="form-group row card-body">
+                    <div class="input-group mb-2 col-sm-12">
+                        <div class="input-group-prepend">
+                            <div class="input-group-text">
+                                <input type="checkbox" name="methodName" value="get" checked>
+                            </div>
+                        </div>
+                        <span class="input-group-text col-sm-2">get 方法</span>
+                        <input type="text" aria-label="get" name="getName" class="form-control" value="get">
+                    </div>
+                    <div class="input-group mb-2 col-sm-12">
+                        <div class="input-group-prepend">
+                            <div class="input-group-text">
+                                <input type="checkbox" name="methodName" checked>
+                            </div>
+                        </div>
+                        <span class="input-group-text col-sm-2">find 方法</span>
+                        <input type="text" aria-label="find" name="findName" class="form-control" value="find">
+                    </div>
+                    <div class="input-group mb-2 col-sm-12">
+                        <div class="input-group-prepend">
+                            <div class="input-group-text">
+                                <input type="checkbox" name="methodName" value="find" checked>
+                            </div>
+                        </div>
+                        <span class="input-group-text col-sm-2">save 方法</span>
+                        <input type="text" aria-label="save" name="saveName" class="form-control" value="save">
+                    </div>
+                    <div class="input-group mb-2 col-sm-12">
+                        <div class="input-group-prepend">
+                            <div class="input-group-text">
+                                <input type="checkbox" name="methodName" value="update" checked>
+                            </div>
+                        </div>
+                        <span class="input-group-text col-sm-2">update 方法</span>
+                        <input type="text" aria-label="First name" name="updateName" class="form-control" value="update">
+                    </div>
+                    <div class="input-group mb-2 col-sm-12">
+                        <div class="input-group-prepend">
+                            <div class="input-group-text">
+                                <input type="checkbox" name="methodName" value="remove" checked>
+                            </div>
+                        </div>
+                        <span class="input-group-text col-sm-2">remove 方法</span>
+                        <input type="text" aria-label="First name" name="removeName" class="form-control" value="remove">
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="tab-pane fade" id="pills-tables" role="tabpanel" aria-labelledby="pills-tables-tab">
+            <div class="card">
+                <div class="card-body">
+                    <div class="form-group">
+                        <button type="button" class="btn btn-primary" id="btn-table">获取表信息</button>
+                        <button type="button" class="btn btn-primary" id="btn-file">生成Mybatis和Service文件</button>
+                        <button type="button" class="btn btn-primary" id="btn-config">生成Mybatis-config文件</button>
+                    </div>
+                    <div class="display-6 alert alert-primary">表信息</div>
+                    <p></p>
+                    <div class="custom-control custom-checkbox" id="all_table_selected">
+                        <input type="checkbox" class="custom-control-input">
+                        <label class="custom-control-label">全选</label>
+                    </div>
+                    <hr class="my-2">
+                    <form id="table_list">
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+$(document).ready(function () {
+    $("#btn-table").click(function(){
+        var data;
+        $.ajax({
+            url: '/setConfig',
+            type: 'POST',
+            cache: false,
+            data: new FormData($('#mybatis_config')[0]),
+            processData: false,
+            contentType: false
+        }).done(function(res) {
+            data = res;
+            $("#table_list").empty();
+            data.forEach(function(value, key) {
+                $("#table_list").append('<div class="form-group mb-2 custom-control custom-checkbox table-selected">\n' +
+                    '            <input type="checkbox" class="custom-control-input" name="tables" value="'+value.tableName+'" checked>\n' +
+                    '            <label class="custom-control-label">'+value.tableName+'</label>\n' +
+                    '        </div>')
+            });
+            $("#all_table_selected").children('input').prop("checked", true);
+        }).fail(function(res) {
+            console.log(res)
+        });
+    })
+    $("#table_list").on("click", "div.table-selected", function () {
+        $(this).children('input').prop('checked', !($(this).children('input').prop('checked')));
+        var len = $("div.table-selected input:checked").length;
+        var len_all = $("div.table-selected input").length;
+        if (len == len_all) {
+            $("#all_table_selected>input").prop("indeterminate", false);
+            $("#all_table_selected input").prop("checked", true);
+        }
+        else if (len == 0) {
+            $("#all_table_selected>input").prop("indeterminate", false);
+            $("#all_table_selected input").prop("checked", false);
+        }
+        else {
+            $("#all_table_selected>input").prop("indeterminate", true);
+        }
+    })
+    $("#all_table_selected").click(function () {
+        if ($(this).children('input').prop("checked")) {
+            $(this).children('input').prop("checked", false);
+            $("#all_table_selected>input").prop("indeterminate", false);
+            $("#table_list").find("input").prop('checked', false);
+        }
+        else {
+            $("#all_table_selected>input").prop("indeterminate", false);
+            $(this).children('input').prop("checked", true);
+            $("#table_list").find("input").prop('checked', true);
+        }
+    })
+    $("#btn-file").click(function () {
+        $.ajax({
+            url: '/generator_file',
+            type: 'POST',
+            cache: false,
+            data: new FormData($("#table_list")[0]),
+            processData: false,
+            contentType: false
+        }).done(function(res) {
+            if (res.code == 0) {
+                alert(res.message);
+            }
+        }).fail(function(res) {
+            console.log(res)
+        });
+    })
+
+    $("#btn-config").click(function () {
+        $.ajax({
+            url: '/generator_config',
+            type: 'POST',
+            cache: false,
+            data: new FormData($("#mybatis_config")[0]),
+            processData: false,
+            contentType: false
+        }).done(function(res) {
+            if (res.code == 0) {
+                alert(res.message);
+            }
+        }).fail(function(res) {
+            console.log(res)
+        });
+    })
+})
+</script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/js/bootstrap.min.js"></script>
+</body>
+</html>
