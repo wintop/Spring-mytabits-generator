@@ -32,9 +32,10 @@ public class GeneratorController {
         dbConnConfig.setUser(user);
         dbConnConfig.setPassword(password);
         dbConnConfig.setTableCat(tableCat);
+
         dbInformation = new DbInformation(dbConnConfig.getDriver(), url, user, password, tableCat);
         dbInformation.getConnection();
-        //    List<Table> tables = dbInformation.getTables();
+        // List<Table> tables = dbInformation.getTables();
         fileDirConfig = new FileDirConfig();
         fileDirConfig.setRootDir(rootDir);
         fileDirConfig.setPackageName(packageName);

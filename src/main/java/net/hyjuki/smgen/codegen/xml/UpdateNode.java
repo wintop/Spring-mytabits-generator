@@ -14,14 +14,13 @@ import java.util.List;
 public class UpdateNode extends NodeElement {
     private String tableName;
     private List<PrimaryKey> keys;
-    private List<Column> columns;
+    private List<Column> columns = new ArrayList<Column>();
 
     public UpdateNode(Table table) {
         super(MapperConstants.UPDATE);
-
         this.setTableName(table.getTableName());
-        this.setColumns(table.getColumns());
         this.setKeys(table.getPrimaryKeys());
+        this.setColumns(table.getColumns());
 
         setSeperator(CommonUtils.lineAndIndent(1));
         addAttribute(MapperConstants.ID, MapperConstants.UPDATE);
@@ -62,9 +61,11 @@ public class UpdateNode extends NodeElement {
     public void setColumns(List<Column> columns) {
         // 主键中的数据不允许被update
         List<String> strKeys = new ArrayList<>();
+
         for (PrimaryKey key: this.keys) {
             strKeys.add(key.getColumnName());
         }
+
         for (Column column: columns) {
             if (!strKeys.contains(column.getColumnName())) {
                 this.columns.add(column);
