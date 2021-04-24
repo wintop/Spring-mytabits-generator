@@ -9,9 +9,9 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>net.hyjuki</groupId>
-    <artifactId>spring-mybatis-generator</artifactId>
+    <artifactId>ssm-generator</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>spring-mybatis-generator</name>
+    <name>ssm-generator</name>
     <description>Demo project for Spring Boot</description>
 
     <properties>

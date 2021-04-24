@@ -22,7 +22,7 @@ public class GeneratorController {
     private DbInformation dbInformation;
     @RequestMapping("/setConfig")
     public List<Table> getTables(String url, String user, String password, String tableCat,
-                      String rootDir, String packageName, String[] fileDir, String[] methodName,
+                      String rootDir, String projectName, String packageName, String[] fileDir, String[] methodName,
                       String xmlDir, String modelDir, String daoDir, String serviceDir, String implDir,
                       String getName, String findName, String saveName, String updateName, String removeName)
             throws SQLException {
@@ -38,6 +38,7 @@ public class GeneratorController {
         // List<Table> tables = dbInformation.getTables();
         fileDirConfig = new FileDirConfig();
         fileDirConfig.setRootDir(rootDir);
+        fileDirConfig.setProjectName(projectName);
         fileDirConfig.setPackageName(packageName);
 
         fileDirConfig.setFileDirs(fileDir);
@@ -46,6 +47,8 @@ public class GeneratorController {
         fileDirConfig.setDaoDir(daoDir);
         fileDirConfig.setServiceDir(serviceDir);
         fileDirConfig.setImplDir(implDir);
+
+        System.out.println(fileDirConfig);
 
         List<Table> tables = dbInformation.getTables();
 
@@ -56,15 +59,15 @@ public class GeneratorController {
     @ResponseBody
     public Map<String, String> generatorFile(String[] tables) {
         Map<String, String> mapResult = new HashMap<>();
+        String message = "操作成功";
 
         System.out.println(Arrays.toString(tables));
-        System.out.println("========fileDirConfig= " + fileDirConfig);
         for (String tableName: tables) {
             try {
-                System.out.println("=========== " + tableName);
                 Table table = dbInformation.getTable(tableName);
-                MyBatisGenerator gen = new MyBatisGenerator(fileDirConfig.getPackageName(), fileDirConfig.getRootDir(),table);
-                gen.generatorComboFiles();
+                MyBatisGenerator gen = new MyBatisGenerator(fileDirConfig.getPackageName(),
+                        fileDirConfig.getProjectName(), fileDirConfig.getRootDir(), table);
+                message = gen.generatorComboFiles();
             } catch (IOException e) {
                 e.printStackTrace();
             } catch (SQLException e) {
@@ -74,17 +77,17 @@ public class GeneratorController {
         }
 
         mapResult.put("code", "0");
-        mapResult.put("message", "操作成功");
+        mapResult.put("message", message);
         return mapResult;
     }
     @RequestMapping("generator_config")
     @ResponseBody
-    public Map<String, String> generatorFile(String rootDir, String packageName) {
+    public Map<String, String> generatorFile(String rootDir, String projectName, String packageName) {
         Map<String, String> mapResult = new HashMap<>();
 
         try {
-            MyBatisGenerator gen = new MyBatisGenerator(packageName, rootDir, null);
-            gen.generatorMybatisConfigXmlFile();
+            MyBatisGenerator gen = new MyBatisGenerator(packageName, projectName, rootDir, null);
+            gen.generatorBaseAndConfigFile();
             mapResult.put("code", "0");
             mapResult.put("message", "操作成功");
         } catch (IOException e) {

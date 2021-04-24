@@ -5,6 +5,7 @@ import java.util.Map;
 
 public class FileDirConfig {
     private String rootDir;
+    private String projectName;
     private String packageName;
     private String[] fileDirs;
     private String xmlDir;
@@ -19,6 +20,14 @@ public class FileDirConfig {
 
     public void setRootDir(String rootDir) {
         this.rootDir = rootDir;
+    }
+
+    public String getProjectName() {
+        return projectName;
+    }
+
+    public void setProjectName(String projectName) {
+        this.projectName = projectName;
     }
 
     public String getPackageName() {
@@ -79,17 +88,17 @@ public class FileDirConfig {
 
     @Override
     public String toString() {
-        final StringBuffer sb = new StringBuffer("FileDirConfig{");
-        sb.append("rootDir='").append(rootDir).append('\'');
-        sb.append(", packageName='").append(packageName).append('\'');
-        sb.append(", fileDirs=").append(fileDirs == null ? "null" : Arrays.asList(fileDirs).toString());
-        sb.append(", xmlDir='").append(xmlDir).append('\'');
-        sb.append(", modelDir='").append(modelDir).append('\'');
-        sb.append(", daoDir='").append(daoDir).append('\'');
-        sb.append(", serviceDir='").append(serviceDir).append('\'');
-        sb.append(", implDir='").append(implDir).append('\'');
-        sb.append('}');
-        return sb.toString();
+        return "FileDirConfig{" +
+                "rootDir='" + rootDir + '\'' +
+                ", projectName='" + projectName + '\'' +
+                ", packageName='" + packageName + '\'' +
+                ", fileDirs=" + Arrays.toString(fileDirs) +
+                ", xmlDir='" + xmlDir + '\'' +
+                ", modelDir='" + modelDir + '\'' +
+                ", daoDir='" + daoDir + '\'' +
+                ", serviceDir='" + serviceDir + '\'' +
+                ", implDir='" + implDir + '\'' +
+                '}';
     }
 }
 

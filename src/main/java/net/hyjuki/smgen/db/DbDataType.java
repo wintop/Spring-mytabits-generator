@@ -45,10 +45,6 @@ public class DbDataType {
         return new DbDataType();
     }
 
-    public Map<Integer, Class> getDataType() {
-        return dataType;
-    }
-
     public String getName(int type) {
         return dataType.get(type).getSimpleName();
     }

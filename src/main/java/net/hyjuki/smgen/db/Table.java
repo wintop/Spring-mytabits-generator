@@ -1,5 +1,6 @@
 package net.hyjuki.smgen.db;
 
+import java.util.Arrays;
 import java.util.List;
 
 public class Table {
@@ -9,9 +10,9 @@ public class Table {
     private List<PrimaryKey> primaryKeys;
     private List<Column> columns;
 
-    public Table(String tableCat, String tableName, String remarks) {
-        this.tableCat = tableCat;
+    public Table(String tableName, String tableCat, String remarks) {
         this.tableName = tableName;
+        this.tableCat = tableCat;
         this.remarks = remarks;
     }
 
@@ -62,7 +63,7 @@ public class Table {
                 ", tableName='" + tableName + '\'' +
                 ", remarks='" + remarks + '\'' +
                 ", primaryKeys=" + primaryKeys +
-                ", columns=" + columns +
+                ", columns=" + Arrays.toString(columns.toArray()) +
                 '}';
     }
 }
