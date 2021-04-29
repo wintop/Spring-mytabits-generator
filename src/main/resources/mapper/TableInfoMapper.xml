@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace = "net.hyjuki.genconfig.dao.TableInfoDao">
+	<resultMap type = "TableInfo" id = "TableInfoMap">
+		<result column = "id" property = "id" />
+		<result column = "name" property = "name" />
+		<result column = "schm_name" property = "schmName" />
+		<result column = "engine" property = "engine" />
+		<result column = "charset" property = "charset" />
+		<result column = "comment" property = "comment" />
+		<result column = "cache" property = "cache" />
+		<result column = "au_show" property = "auShow" />
+		<result column = "detail_show" property = "detailShow" />
+	</resultMap>
+	
+	<sql id = "column_list">
+		id, name, schm_name, engine, 
+		charset, comment, cache, au_show, detail_show
+	</sql>
+	
+	<insert id = "save" parameterType = "TableInfo">
+		insert into table_info (
+			name, schm_name, engine, charset, 
+			comment, cache, au_show, detail_show
+		) values (
+			#{name}, #{schmName}, #{engine}, #{charset}, 
+			#{comment}, #{cache}, #{auShow}, #{detailShow}
+		)
+	</insert>
+	
+	<select id = "get" parameterType = "java.lang.Integer" resultMap = "TableInfoMap">
+		select <include refid = "column_list" /> from table_info
+		where id = #{id}
+	</select>
+	
+	<select id = "find" parameterType = "TableInfo" resultMap = "TableInfoMap">
+		select <include refid = "column_list" /> from table_info
+		<where>
+			<if test = "id != null">and id = #{id}</if>
+			<if test = "name != null">and name = #{name}</if>
+			<if test = "schmName != null">and schm_name = #{schmName}</if>
+			<if test = "engine != null">and engine = #{engine}</if>
+			<if test = "charset != null">and charset = #{charset}</if>
+			<if test = "comment != null">and comment = #{comment}</if>
+			<if test = "cache != null">and cache = #{cache}</if>
+			<if test = "auShow != null">and au_show = #{auShow}</if>
+			<if test = "detailShow != null">and detail_show = #{detailShow}</if>
+		</where>
+	</select>
+	
+	<update id = "update" parameterType = "TableInfo">
+		update table_info
+		<set>
+			<if test = "name != null">name = #{name},</if>
+			<if test = "schmName != null">schm_name = #{schmName},</if>
+			<if test = "engine != null">engine = #{engine},</if>
+			<if test = "charset != null">charset = #{charset},</if>
+			<if test = "comment != null">comment = #{comment},</if>
+			<if test = "cache != null">cache = #{cache},</if>
+			<if test = "auShow != null">au_show = #{auShow},</if>
+			<if test = "detailShow != null">detail_show = #{detailShow},</if>
+		</set>
+		where id = #{id}
+	</update>
+	
+	<delete id = "remove" parameterType = "java.lang.Integer">
+		delete from table_info
+		where id = #{id}
+	</delete>
+</mapper>

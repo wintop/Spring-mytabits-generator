@@ -46,6 +46,10 @@ public class DbDataType {
     }
 
     public String getName(int type) {
+        // java自带的这个Types对于mysql来说数据类型不全，这个是为了Text类型做的判断
+        if (type == -1) {
+            return String.class.getSimpleName();
+        }
         return dataType.get(type).getSimpleName();
     }
 

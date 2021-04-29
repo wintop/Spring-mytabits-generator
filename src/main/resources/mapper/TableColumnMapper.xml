@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace = "net.hyjuki.genconfig.dao.TableColumnDao">
+	<resultMap type = "TableColumn" id = "TableColumnMap">
+		<result column = "id" property = "id" />
+		<result column = "table_name" property = "tableName" />
+		<result column = "name" property = "name" />
+		<result column = "data_type" property = "dataType" />
+		<result column = "sort" property = "sort" />
+		<result column = "is_null" property = "isNull" />
+		<result column = "auto_increment" property = "autoIncrement" />
+		<result column = "default_value" property = "defaultValue" />
+		<result column = "comment" property = "comment" />
+		<result column = "edit_element" property = "editElement" />
+		<result column = "data" property = "data" />
+		<result column = "data_from" property = "dataFrom" />
+		<result column = "add_type" property = "addType" />
+		<result column = "update_type" property = "updateType" />
+		<result column = "query_type" property = "queryType" />
+	</resultMap>
+	
+	<sql id = "column_list">
+		id, table_name, name, data_type, 
+		sort, is_null, auto_increment, default_value, 
+		comment, edit_element, data, data_from, 
+		add_type, update_type, query_type
+	</sql>
+	
+	<insert id = "save" parameterType = "TableColumn">
+		insert into table_column (
+			table_name, name, data_type, sort, 
+			is_null, auto_increment, default_value, comment, 
+			edit_element, data, data_from, add_type, 
+			update_type, query_type
+		) values (
+			#{tableName}, #{name}, #{dataType}, #{sort}, 
+			#{isNull}, #{autoIncrement}, #{defaultValue}, #{comment}, 
+			#{editElement}, #{data}, #{dataFrom}, #{addType}, 
+			#{updateType}, #{queryType}
+		)
+	</insert>
+	
+	<select id = "get" parameterType = "java.lang.Integer" resultMap = "TableColumnMap">
+		select <include refid = "column_list" /> from table_column
+		where id = #{id}
+	</select>
+	
+	<select id = "find" parameterType = "TableColumn" resultMap = "TableColumnMap">
+		select <include refid = "column_list" /> from table_column
+		<where>
+			<if test = "id != null">and id = #{id}</if>
+			<if test = "tableName != null">and table_name = #{tableName}</if>
+			<if test = "name != null">and name = #{name}</if>
+			<if test = "dataType != null">and data_type = #{dataType}</if>
+			<if test = "sort != null">and sort = #{sort}</if>
+			<if test = "isNull != null">and is_null = #{isNull}</if>
+			<if test = "autoIncrement != null">and auto_increment = #{autoIncrement}</if>
+			<if test = "defaultValue != null">and default_value = #{defaultValue}</if>
+			<if test = "comment != null">and comment = #{comment}</if>
+			<if test = "editElement != null">and edit_element = #{editElement}</if>
+			<if test = "data != null">and data = #{data}</if>
+			<if test = "dataFrom != null">and data_from = #{dataFrom}</if>
+			<if test = "addType != null">and add_type = #{addType}</if>
+			<if test = "updateType != null">and update_type = #{updateType}</if>
+			<if test = "queryType != null">and query_type = #{queryType}</if>
+		</where>
+	</select>
+	
+	<update id = "update" parameterType = "TableColumn">
+		update table_column
+		<set>
+			<if test = "tableName != null">table_name = #{tableName},</if>
+			<if test = "name != null">name = #{name},</if>
+			<if test = "dataType != null">data_type = #{dataType},</if>
+			<if test = "sort != null">sort = #{sort},</if>
+			<if test = "isNull != null">is_null = #{isNull},</if>
+			<if test = "autoIncrement != null">auto_increment = #{autoIncrement},</if>
+			<if test = "defaultValue != null">default_value = #{defaultValue},</if>
+			<if test = "comment != null">comment = #{comment},</if>
+			<if test = "editElement != null">edit_element = #{editElement},</if>
+			<if test = "data != null">data = #{data},</if>
+			<if test = "dataFrom != null">data_from = #{dataFrom},</if>
+			<if test = "addType != null">add_type = #{addType},</if>
+			<if test = "updateType != null">update_type = #{updateType},</if>
+			<if test = "queryType != null">query_type = #{queryType},</if>
+		</set>
+		where id = #{id}
+	</update>
+	
+	<delete id = "remove" parameterType = "java.lang.Integer">
+		delete from table_column
+		where id = #{id}
+	</delete>
+</mapper>

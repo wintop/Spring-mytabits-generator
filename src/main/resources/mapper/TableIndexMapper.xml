@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace = "net.hyjuki.genconfig.dao.TableIndexDao">
+	<resultMap type = "TableIndex" id = "TableIndexMap">
+		<result column = "id" property = "id" />
+		<result column = "name" property = "name" />
+		<result column = "type" property = "type" />
+		<result column = "col_name" property = "colName" />
+	</resultMap>
+	
+	<sql id = "column_list">
+		id, name, type, col_name
+	</sql>
+	
+	<insert id = "save" parameterType = "TableIndex">
+		insert into table_index (
+			name, type, col_name
+		) values (
+			#{name}, #{type}, #{colName}
+		)
+	</insert>
+	
+	<select id = "get" parameterType = "java.lang.Integer" resultMap = "TableIndexMap">
+		select <include refid = "column_list" /> from table_index
+		where id = #{id}
+	</select>
+	
+	<select id = "find" parameterType = "TableIndex" resultMap = "TableIndexMap">
+		select <include refid = "column_list" /> from table_index
+		<where>
+			<if test = "id != null">and id = #{id}</if>
+			<if test = "name != null">and name = #{name}</if>
+			<if test = "type != null">and type = #{type}</if>
+			<if test = "colName != null">and col_name = #{colName}</if>
+		</where>
+	</select>
+	
+	<update id = "update" parameterType = "TableIndex">
+		update table_index
+		<set>
+			<if test = "name != null">name = #{name},</if>
+			<if test = "type != null">type = #{type},</if>
+			<if test = "colName != null">col_name = #{colName},</if>
+		</set>
+		where id = #{id}
+	</update>
+	
+	<delete id = "remove" parameterType = "java.lang.Integer">
+		delete from table_index
+		where id = #{id}
+	</delete>
+</mapper>
