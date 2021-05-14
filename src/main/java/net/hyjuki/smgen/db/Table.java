@@ -44,7 +44,7 @@ public class Table {
         return primaryKey;
     }
 
-    public void setPrimaryKeys(PrimaryKey primaryKey) {
+    public void setPrimaryKey(PrimaryKey primaryKey) {
         this.primaryKey = primaryKey;
     }
 

@@ -205,7 +205,7 @@ public class MapperXml extends NodeElement {
     public void setSelectPageNode() {
         // <select id = "find" ....> ... </select>
         SelectPageNode pageNode = new SelectPageNode(tableName, resultMap);
-        pageNode.setElements(this.paramObjName, columns);
+        pageNode.setElements(this.paramObjName, columns, table.getPrimaryKey());
         this.addElement(pageNode);
         this.addElement(renderLine());
     }
@@ -214,7 +214,7 @@ public class MapperXml extends NodeElement {
         // <select id = "find" ....> ... </select>
         SelectPageNode pageNode = new SelectPageNode(tableName, resultMap);
         pageNode.setSelectId(pageId);
-        pageNode.setElements(this.paramObjName, columns);
+        pageNode.setElements(this.paramObjName, columns, table.getPrimaryKey());
         this.addElement(pageNode);
         this.addElement(renderLine());
     }

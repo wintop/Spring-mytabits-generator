@@ -13,6 +13,8 @@ public class MapperConstants {
     public static final String UPDATE = "update";
     public static final String ORDER_BY = "order by";
     public static final String LIMIT = "limit";
+    public static final String DESC = "desc";
+    public static final String ASC = "asc";
 
     public static final String MAPPER = "mapper";
     public static final String RESULT_MAP = "resultMap";

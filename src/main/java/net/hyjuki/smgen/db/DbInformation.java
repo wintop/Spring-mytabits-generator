@@ -141,7 +141,7 @@ public class DbInformation {
                 if (columnName.equals(column.getColumnName())) {
                     key.setDateType(column.getDataType());
                     key.setAutoIncrement(column.getAutoIncrement());
-                    table.setPrimaryKeys(key);
+                    table.setPrimaryKey(key);
                     break;
                 }
             }

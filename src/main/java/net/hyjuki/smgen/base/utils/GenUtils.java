@@ -19,6 +19,7 @@ public class GenUtils {
     public static final String DIR_MAPPER = "mapper";
     public static final String SPACE = " ";
     public static final String SEMICOLON = ";";
+    public static final String COMMA = ",";
 
     /**
      * 判断字符串是否空，如果是null或者""范围true
@@ -208,7 +209,7 @@ public class GenUtils {
     public static String concatBySeparator(String separator, String... strings) {
         StringBuilder sb = new StringBuilder();
         if (strings.length == 1) {
-            return sb.append(separator).append(strings[0]).toString();
+            return sb.append(strings[0]).toString();
         }
 
         int len = strings.length - 1;
@@ -216,6 +217,25 @@ public class GenUtils {
             sb.append(strings[i]).append(separator);
         }
         return sb.append(strings[len]).toString();
+    }
+
+    /**
+     * 通过连接符连接字符串
+     * @param separator
+     * @param strings
+     * @return
+     */
+    public static String concatBySeparator(String separator, List strings) {
+        StringBuilder sb = new StringBuilder();
+        if (strings.size() == 1) {
+            return sb.append(strings.get(0)).toString();
+        }
+
+        int len = strings.size() - 1;
+        for (int i = 0; i < len; i++) {
+            sb.append(strings.get(i)).append(separator);
+        }
+        return sb.append(strings.get(len)).toString();
     }
 
     /**

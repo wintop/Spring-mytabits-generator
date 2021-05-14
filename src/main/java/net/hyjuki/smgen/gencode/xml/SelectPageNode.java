@@ -1,11 +1,14 @@
 package net.hyjuki.smgen.gencode.xml;
 
 import net.hyjuki.smgen.base.utils.GenUtils;
+import net.hyjuki.smgen.db.PrimaryKey;
 import net.hyjuki.smgen.db.TableColumn;
 import net.hyjuki.smgen.gencode.xml.base.MapperConstants;
 import net.hyjuki.smgen.gencode.xml.base.NodeElement;
+import net.hyjuki.smgen.gencode.xml.base.SelectSort;
 import net.hyjuki.smgen.gencode.xml.base.TextElement;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class SelectPageNode extends NodeElement {
@@ -13,6 +16,7 @@ public class SelectPageNode extends NodeElement {
     private String resultMap;
     private String idValue;
     private TextElement limitElement;
+    private TextElement sortElement = new TextElement();
 
     public SelectPageNode(String tableName, String resultMap) {
         super(MapperConstants.SELECT);
@@ -33,7 +37,7 @@ public class SelectPageNode extends NodeElement {
         addAttribute(MapperConstants.ID, idValue);
     }
 
-    public void setElements(String obj, List<TableColumn> columns,
+    public void setElements(String obj, List<TableColumn> columns, PrimaryKey key,
                 String pageNo, String pageSize) {
         TextElement select = new SelectElement(tableName);
         select.setNormalize(false);
@@ -41,12 +45,16 @@ public class SelectPageNode extends NodeElement {
         WhereFindNode whereFindNode = new WhereFindNode();
         whereFindNode.setElement(obj, columns);
         this.addElement(whereFindNode);
+        if (key != null) {
+            this.setSort(MapperConstants.DESC, GenUtils.getProperty(key.getColumnName()));
+            this.addElement(this.sortElement);
+        }
         this.setLimit(pageNo, pageSize);
         this.addElement(this.limitElement);
     }
 
-    public void setElements(String obj, List<TableColumn> columns) {
-        this.setElements(obj, columns, "pageNo", "pageSizes");
+    public void setElements(String obj, List<TableColumn> columns, PrimaryKey key) {
+        this.setElements(obj, columns, key, "page.pageNo", "paeg.pageSizes");
     }
 
     /**
@@ -66,5 +74,21 @@ public class SelectPageNode extends NodeElement {
         limitElement.setNormalize(false);
         limitElement.addElement(sb.toString());
         this.limitElement = limitElement;
+    }
+
+    public void setSort(String sortType, List<String> columns) {
+        if (sortType != null) {
+            String sortCols = GenUtils.concatBySeparator(GenUtils.COMMA, columns);
+            this.sortElement.addElement(GenUtils.concatBySeparator(GenUtils.SPACE,
+                    MapperConstants.ORDER_BY, sortCols, sortType));
+        }
+    }
+
+    public void setSort(String sortType, String... columns) {
+        if (sortType != null) {
+            String sortCols = GenUtils.concatBySeparator(GenUtils.COMMA, columns);
+            this.sortElement.addElement(GenUtils.concatBySeparator(GenUtils.SPACE,
+                    MapperConstants.ORDER_BY, sortCols, sortType));
+        }
     }
 }
