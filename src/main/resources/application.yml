@@ -18,46 +18,13 @@ spring:
   transaction:
     rollback-on-commit-failure: true
 
-  # REDIS (RedisProperties)
-  # Redis数据库索引（默认为0）
-  redis:
-    database: 0
-    # Redis服务器地址
-    host: 192.168.56.122
-    # Redis服务器连接端口
-    port: 6379
-    # Redis服务器连接密码（默认为空）
-    password:
-    # 连接池最大连接数（使用负值表示没有限制）
-    jedis.pool.max-active: 8
-    # 连接池最大阻塞等待时间（使用负值表示没有限制）
-    jedis.pool.max-wait: -1
-    # 连接池中的最大空闲连接
-    jedis.pool.max-idle: 8
-    # 连接池中的最小空闲连接
-    lettuce.pool.min-idle: 0
-    # 连接超时时间（毫秒）
-    timeout: 5000
-
-##日志级别
+## logging
 logging:
   level:
     root: info
-    net.hyjuki.smgen.genconfig.dao: debug
+    net.hyjuki.smgen.dao: debug
 
 mybatis:
   config-location: classpath:config/mybatis-config.xml
   mapper-locations: classpath:mapper/*.xml
-  type-aliases-package: net.hyjuki.smgen.genconfig.model
-
-
-#微信小程序的appid
-wx:
-  miniapp:
-    configs:
-      appid: wx6a23936369f9be17
-      #微信小程序的Secret
-      secret: 7a6a641522c7e7b30d43714ae1e9dae3
-      toke: #微信小程序消息服务器配置的token
-      aesKey: #微信小程序消息服务器配置的EncodingAESKey
-      msgDataFormat: JSON
+  type-aliases-package: net.hyjuki.smgen.model

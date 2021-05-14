@@ -1,44 +1,41 @@
 package net.hyjuki.smgen.db;
 
+import org.apache.ibatis.type.ByteObjectArrayTypeHandler;
+
 import java.math.BigDecimal;
-import java.sql.Types;
 import java.util.Date;
 
 public enum DataType {
-    ARRAY(Types.ARRAY, Object.class),
-    BIGINT(Types.BIGINT, Long.class),
-    BIT(Types.BIT, Boolean.class),
-    BOOLEAN(Types.BOOLEAN, Boolean.class),
-    CHAR(Types.CHAR, String.class),
-    CLOB(Types.CLOB, String.class),
-    DATALINK(Types.DATALINK, Object.class),
-    DATE(Types.DATE, Date.class),
-    DECIMAL(Types.DECIMAL, BigDecimal.class),
-    DISTINCT(Types.DISTINCT, Object.class),
-    DOUBLE(Types.DOUBLE, Double.class),
-    FLOAT(Types.FLOAT, Double.class),
-    INTEGER(Types.INTEGER, Integer.class),
-    JAVA_OBJECT(Types.JAVA_OBJECT, Object.class),
-    LONGNVARCHAR(Types.LONGNVARCHAR, String.class),
-    NCHAR(Types.NCHAR, String.class),
-    NCLOB(Types.NCLOB, String.class),
-    NVARCHAR(Types.NVARCHAR, String.class),
-    NULL(Types.NULL, Object.class),
-    NUMERIC(Types.NUMERIC, BigDecimal.class),
-    OTHER(Types.OTHER, Object.class),
-    REAL(Types.REAL, Float.class),
-    REF(Types.REF, Object.class),
-    SMALLINT(Types.SMALLINT, Short.class),
-    STRUCT(Types.STRUCT, Object.class),
-    TIME(Types.TIME, Date.class),
-    TIMESTAMP(Types.TIMESTAMP, Date.class),
-    TINYINT(Types.TINYINT, Byte.class),
-    VARCHAR(Types.VARCHAR, String.class);
+    CHAR("CHAR", Character.class), // types: 1
+    NUMERIC("NUMERIC", BigDecimal.class), // types: 2
+    DECIMAL("DECIMAL", BigDecimal.class), // types: 3
+    INT("INT", Integer.class), // types: 4
+    MEDIUMINT("MEDIUMINT", Integer.class), // types: 4
+    SMALLINT("SMALLINT", Short.class), // types: 5
+    VARCHAR("VARCHAR", String.class), // types: 12
+    FLOAT("FLOAT", Float.class), // types: 7
+    DOUBLE("DOUBLE", Double.class), // types: 8
+    YEAR("YEAR", Date.class), // types: 91
+    DATE("DATE", Date.class), // types: 91
+    TIME("TIME", Date.class), // types: 92
+    DATETIME("DATETIME", Date.class), // types: 93
+    TIMESTAMP("TIMESTAMP", Date.class), // types: 93
+    BIT("BIT", Boolean.class), //  types:-7
+    TINYINT("TINYINT", Byte.class), //  types:-6
+    BIGINT("BIGINT", Long.class), //  types:-5
+    BLOB("BLOB", String.class), //  types:-4 byte[]
+    VARBINARY("VARBINARY", String.class), //  types:-3 byte[]
+    BINARY("BINARY", String.class), //  types:-2 byte[]
+    GEOMETRY("GEOMETRY", Object.class), //  types:-2
+    ENUM("ENUM", String .class), // types: 1
+    SET("SET", Object.class), // types: 1
+    TEXT("TEXT", String.class), //  types:-1
+    JSON("JSON", Object.class); //  types:-1
 
-    private int type;
+    private String type;
     private Class name;
 
-    DataType(int type, Class name) {
+    DataType(String type, Class name) {
         this.type = type;
         this.name = name;
     }
@@ -51,20 +48,7 @@ public enum DataType {
         return this.name.getName();
     }
 
-    public static String getName(int type) {
-        for (DataType t: DataType.values()) {
-            if (t.type == type) {
-                return t.getName();
-            }
-        }
-
-        return "";
-    }
-
     public static void main(String[] args) {
-        System.out.println(DataType.VARCHAR.getName());
-        System.out.println(DataType.VARCHAR.getFullName());
-        System.out.println(DataType.VARCHAR.name());
-        System.out.println(DataType.getName(Types.DATE));
+        System.out.println(Byte.class);
     }
 }

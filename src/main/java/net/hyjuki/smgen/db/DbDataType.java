@@ -39,6 +39,9 @@ public class DbDataType {
         dataType.put(Types.TIMESTAMP, Date.class);
         dataType.put(Types.TINYINT, Byte.class);
         dataType.put(Types.VARCHAR, String.class);
+        dataType.put(Types.BINARY, Byte[].class);
+        dataType.put(Types.VARBINARY, Byte[].class);
+        dataType.put(Types.LONGVARBINARY, Byte[].class);
     }
 
     public static DbDataType getInstance() {

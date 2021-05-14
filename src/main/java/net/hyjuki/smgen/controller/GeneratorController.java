@@ -1,6 +1,6 @@
 package net.hyjuki.smgen.controller;
 
-import net.hyjuki.smgen.codegen.MyBatisGenerator;
+import net.hyjuki.smgen.gencode.MyBatisGenerator;
 import net.hyjuki.smgen.db.DbInformation;
 import net.hyjuki.smgen.db.Table;
 import net.hyjuki.smgen.model.DbConnConfig;
@@ -71,6 +71,8 @@ public class GeneratorController {
             } catch (IOException e) {
                 e.printStackTrace();
             } catch (SQLException e) {
+                e.printStackTrace();
+            } catch (Exception e) {
                 e.printStackTrace();
             }
 

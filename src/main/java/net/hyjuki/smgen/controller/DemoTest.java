@@ -1,9 +1,6 @@
 package net.hyjuki.smgen.controller;
 
-import net.hyjuki.smgen.base.CommonUtils;
-import net.hyjuki.smgen.xml.MybatisConfigXml;
-import net.hyjuki.smgen.xml.base.Attribute;
-import net.hyjuki.smgen.xml.base.MapperConstants;
+import net.hyjuki.smgen.gencode.xml.base.Attribute;
 import net.hyjuki.smgen.db.*;
 
 import java.sql.SQLException;

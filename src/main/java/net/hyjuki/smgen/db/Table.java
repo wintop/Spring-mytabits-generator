@@ -7,8 +7,8 @@ public class Table {
     private String tableCat;
     private String tableName;
     private String remarks;
-    private List<PrimaryKey> primaryKeys;
-    private List<Column> columns;
+    private PrimaryKey primaryKey;
+    private List<TableColumn> columns;
 
     public Table(String tableName, String tableCat, String remarks) {
         this.tableName = tableName;
@@ -40,19 +40,19 @@ public class Table {
         this.remarks = remarks;
     }
 
-    public List<PrimaryKey> getPrimaryKeys() {
-        return primaryKeys;
+    public PrimaryKey getPrimaryKey() {
+        return primaryKey;
     }
 
-    public void setPrimaryKeys(List<PrimaryKey> primaryKeys) {
-        this.primaryKeys = primaryKeys;
+    public void setPrimaryKeys(PrimaryKey primaryKey) {
+        this.primaryKey = primaryKey;
     }
 
-    public List<Column> getColumns() {
+    public List<TableColumn> getColumns() {
         return columns;
     }
 
-    public void setColumns(List<Column> columns) {
+    public void setColumns(List<TableColumn> columns) {
         this.columns = columns;
     }
 
@@ -62,7 +62,7 @@ public class Table {
                 "tableCat='" + tableCat + '\'' +
                 ", tableName='" + tableName + '\'' +
                 ", remarks='" + remarks + '\'' +
-                ", primaryKeys=" + primaryKeys +
+                ", primaryKey=" + primaryKey +
                 ", columns=" + Arrays.toString(columns.toArray()) +
                 '}';
     }

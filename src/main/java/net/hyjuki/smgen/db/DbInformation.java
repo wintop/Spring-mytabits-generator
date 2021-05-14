@@ -123,9 +123,10 @@ public class DbInformation {
     public Table getTableFromSet(String tableName, String tableCat, String remarks) throws SQLException {
         Table table = new Table(tableName, tableCat, remarks);
 
-        List<PrimaryKey> keys = new ArrayList<>();
-        List<Column> columns = getColumnsFromDb(tableName);
+        PrimaryKey keys = new PrimaryKey();
+        List<TableColumn> columns = getColumnsFromDb(tableName);
 
+        table.setColumns(columns);
         // 设置每张表的Primary Key信息
         ResultSet rsKey = connection.getMetaData().getPrimaryKeys(tableCat, null, tableName);
 
@@ -135,23 +136,22 @@ public class DbInformation {
             key.setColumnName(columnName);
             key.setKeySeq(rsKey.getInt(KEY_SEQ));
 
-            for (Column column: columns) {
+            for (TableColumn column: columns) {
+                // 只允许有一个primary key
                 if (columnName.equals(column.getColumnName())) {
                     key.setDateType(column.getDataType());
-                    key.setAutoIncrement(column.getIsAutoIncrement());
+                    key.setAutoIncrement(column.getAutoIncrement());
+                    table.setPrimaryKeys(key);
+                    break;
                 }
             }
-
-            keys.add(key);
         }
 
-        table.setPrimaryKeys(keys);
-        table.setColumns(columns);
         return table;
     }
 
-    public List<Column> getColumnsFromDb(String tableName) {
-        List<Column> columns = new ArrayList<>();
+    public List<TableColumn> getColumnsFromDb(String tableName) {
+        List<TableColumn> columns = new ArrayList<>();
         try {
             ResultSet columnnSet = getColumnResultSet(tableName);
             while (columnnSet.next()) {
@@ -160,7 +160,7 @@ public class DbInformation {
                 if ("YES".equals(autoincrement.trim())) {
                     isAuto = true;
                 }
-                Column column = new Column(columnnSet.getString(COLUMN_NAME),
+                TableColumn column = new TableColumn(columnnSet.getString(COLUMN_NAME),
                         columnnSet.getInt(DATA_TYPE), columnnSet.getString(TYPE_NAME),
                         columnnSet.getString(REMARKS), isAuto);
                 columns.add(column);

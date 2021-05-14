@@ -1,5 +1,8 @@
 package net.hyjuki.smgen.base;
 
+import net.hyjuki.smgen.base.utils.GenUtils;
+import net.hyjuki.smgen.base.utils.JavaConstants;
+
 public class BaseProject {
     // BaseDao的包
     String baseDaoPkg;
@@ -17,15 +20,15 @@ public class BaseProject {
     String ctrlPkg;
 
     public void init(String pkgName) {
-        baseDaoPkg = CommonUtils.concatPackage(pkgName,
+        baseDaoPkg = GenUtils.concatPackage(pkgName,
                 JavaConstants.DIR_BASE, JavaConstants.DIR_DAO);
-        baseSevicePkg = CommonUtils.concatPackage(pkgName,
+        baseSevicePkg = GenUtils.concatPackage(pkgName,
                 JavaConstants.DIR_BASE, JavaConstants.DIR_SERVICE);
-        modelPkg = CommonUtils.concatPackage(pkgName, JavaConstants.DIR_MODEL);
-        daoPkg = CommonUtils.concatPackage(pkgName, JavaConstants.DIR_DAO);
-        servicePkg = CommonUtils.concatPackage(pkgName, JavaConstants.DIR_SERVICE);
-        implPkg = CommonUtils.concatPackage(servicePkg, JavaConstants.DIR_IMPL);
-        ctrlPkg = CommonUtils.concatPackage(pkgName, JavaConstants.DIR_CONTROLLER);
+        modelPkg = GenUtils.concatPackage(pkgName, JavaConstants.DIR_MODEL);
+        daoPkg = GenUtils.concatPackage(pkgName, JavaConstants.DIR_DAO);
+        servicePkg = GenUtils.concatPackage(pkgName, JavaConstants.DIR_SERVICE);
+        implPkg = GenUtils.concatPackage(servicePkg, JavaConstants.DIR_IMPL);
+        ctrlPkg = GenUtils.concatPackage(pkgName, JavaConstants.DIR_CONTROLLER);
         this.setBaseInfo();
     }
 
