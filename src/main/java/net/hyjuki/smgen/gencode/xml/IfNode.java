@@ -19,12 +19,13 @@ public class IfNode extends NodeElement {
      * @return
      */
     public boolean setWhereElement(String column) {
-        this.addAttribute(MapperConstants.TEST, this.getAttrValue(column));
+        String property = GenUtils.renderProperty(column);
+        this.addAttribute(MapperConstants.TEST, this.getAttrValue(property));
         StringBuilder sb = new StringBuilder();
         sb.append(MapperConstants.AND)
-                .append(" ")
+                .append(GenUtils.SPACE)
                 .append(column).append(" = ")
-                .append(GenUtils.renderProperty(column));
+                .append(property);
 
         TextElement textElement = new TextElement();
         textElement.addElement(sb.toString());
@@ -84,7 +85,7 @@ public class IfNode extends NodeElement {
         int size = attributes.size();
 
         for (Attribute attribute: attributes) {
-            sb.append(" ")
+            sb.append(GenUtils.SPACE)
                     .append(attribute.getName())
                     .append(" = \"")
                     .append(attribute.getValue())
