@@ -19,13 +19,13 @@ public class IfNode extends NodeElement {
      * @return
      */
     public boolean setWhereElement(String column) {
-        String property = GenUtils.renderProperty(column);
+        String property = GenUtils.getProperty(column);
         this.addAttribute(MapperConstants.TEST, this.getAttrValue(property));
         StringBuilder sb = new StringBuilder();
         sb.append(MapperConstants.AND)
                 .append(GenUtils.SPACE)
                 .append(column).append(" = ")
-                .append(property);
+                .append(GenUtils.renderProperty(column));
 
         TextElement textElement = new TextElement();
         textElement.addElement(sb.toString());
@@ -49,7 +49,9 @@ public class IfNode extends NodeElement {
                 .append(column).append(GenUtils.SPACE)
                 .append(operator)
                 .append(GenUtils.SPACE)
-                .append(property);
+                .append("#{")
+                .append(property)
+                .append("}");
 
         TextElement textElement = new TextElement();
         textElement.addElement(sb.toString());
@@ -58,7 +60,7 @@ public class IfNode extends NodeElement {
 
     // update的set部分
     public boolean setSetElement(String column) {
-        this.addAttribute(MapperConstants.TEST, this.getAttrValue(column));
+        this.addAttribute(MapperConstants.TEST, this.getAttrValue(GenUtils.getProperty(column)));
         StringBuilder sb = new StringBuilder();
         sb.append(column).append(" = ")
                 .append(GenUtils.renderProperty(column))
