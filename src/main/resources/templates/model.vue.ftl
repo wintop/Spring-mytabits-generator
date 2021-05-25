@@ -1,11 +1,11 @@
 <template>
   <div class="main-wrapper">
     <div class="filter-container">
-      <el-input v-model="listQuery.name" placeholder="名称" class="filter-item" @keyup.enter.native="handleFilter"/>
+      <el-input v-model="listQuery.name" placeholder="名称" class="filter-item" @keyup.enter.native="handleFilter" />
       <el-select v-model="listQuery.status" placeholder="状态" clearable class="filter-item">
-        <el-option v-for="item in statusOptions" :key="item.key" :label="item.statusName" :value="item.key"/>
+        <el-option v-for="item in statusOptions" :key="item.key" :label="item.statusName" :value="item.key" />
       </el-select>
-      <el-button v-waves class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">查询</el-button>
+      <el-button class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">查询</el-button>
       <el-button class="filter-item" type="primary" icon="el-icon-edit" @click="handleCreate">添加</el-button>
     </div>
 
@@ -14,13 +14,13 @@
   <#list columns as column>
       <el-table-column label="${column.remarks}" align="center">
         <template slot-scope="{row}">
-          <#if column.columnName == 'status'>
+    <#if column.columnName == 'status'>
           <el-tag :type="row.status | styleFilter()">{{ row.status | statusFilter() }}</el-tag>
-          <#elseif column.typeName = 'Date'>
+    <#elseif column.typeName == 'DATE' || column.typeName == 'DATETIME'>
           <span>{{ row.${column.propertyName} | timeFilter('{y}-{m}-{d} {h}:{i}') }}</span>
-          <#else>
+    <#else>
           {{ row.${column.propertyName} }}
-          </#if>
+    </#if>
         </template>
       </el-table-column>
   </#list>
@@ -44,10 +44,10 @@
         <el-form-item label="${column.remarks}">
           <#if column.columnName == 'status' >
           <el-select v-model="${objName}Data.status" class="filter-item" placeholder="请选择">
-            <el-option v-for="item in statusOptions" :key="item.key" :label="item.statusName" :value="item.key"/>
+            <el-option v-for="item in statusOptions" :key="item.key" :label="item.statusName" :value="item.key" />
           </el-select>
           <#else>
-          <el-input v-model="${objName}Data.${column.propertyName}" placeholder="请填写${column.remarks}"/>
+          <el-input v-model="${objName}Data.${column.propertyName}" placeholder="请填写${column.remarks}" />
           </#if>
         </el-form-item>
         </#list>
@@ -61,19 +61,19 @@
 
     <el-dialog title="详情" :visible.sync="dialogDetailVisible">
       <el-form ref="dataForm" :model="${objName}Data" label-position="left" label-width="90px">
-        <#if columns??>
-          <#list columns as column>
-            <el-form-item label="${column.remarks}">
-            <#if column.columnName == 'status' >
-              <el-tag :type="row.status | styleFilter()">{{ row.status | statusFilter() }}</el-tag>
-            <#elseif column.typeName == 'Date'>
-              <span>{{ row.${column.propertyName} | timeFilter('{y}-{m}-{d} {h}:{i}') }}</span>
-            <#else>
-              <span>{{ row.${column.propertyName} }}</span>
-            </#if>
-            </el-form-item>
-          </#list>
+      <#if columns??>
+        <#list columns as column>
+        <el-form-item label="${column.remarks}">
+        <#if column.columnName == 'status' >
+          <el-tag :type="${objName}Data.status | styleFilter()">{{ ${objName}Data.status | statusFilter() }}</el-tag>
+        <#elseif column.typeName == 'DATE' ||  column.typeName == 'DATETIME'>
+          <span>{{ ${objName}Data.${column.propertyName} | timeFilter('{y}-{m}-{d} {h}:{i}') }}</span>
+        <#else>
+          <span>{{ ${objName}Data.${column.propertyName} }}</span>
         </#if>
+        </el-form-item>
+        </#list>
+      </#if>
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="dialogFormVisible = false">关闭</el-button>
@@ -112,7 +112,7 @@ export default {
       listLoading: true,
       listQuery: {
         page: 1,
-        limit: 20,
+        limit: 20
       },
       statusOptions: [
         { key: 0, statusName: '无效' },
@@ -126,7 +126,7 @@ export default {
         update: '修改',
         create: '添加'
       },
-      rules: {},
+      rules: {}
     }
   },
   created() {
@@ -145,13 +145,13 @@ export default {
     },
     handleFilter() {
       this.listQuery.page = 1
-      this.get${className}List()
+      this.fetch${className}List()
     },
     reset${className}Data() {
-        this.${className}Data = {}
+      this.${objName}Data = {}
     },
-    handleDetail() {
-      this.${className}Data = Object.assign({}, row)
+    handleDetail(row) {
+      this.${objName}Data = Object.assign({}, row)
       this.dialogDetailVisible = true
     },
     handleCreate() {
@@ -165,7 +165,7 @@ export default {
     create${className}() {
       this.$refs['dataForm'].validate((valid) => {
         if (valid) {
-          add${className}(this.${className}Data).then((response) => {
+          add${className}(this.${objName}Data).then((response) => {
             this.fetch${className}List()
             this.dialogFormVisible = false
             this.$notify({
@@ -179,7 +179,7 @@ export default {
       })
     },
     handleUpdate(row) {
-      this.${className}Data = Object.assign({}, row)
+      this.${objName}Data = Object.assign({}, row)
       this.dialogStatus = 'update'
       this.dialogFormVisible = true
       this.$nextTick(() => {
@@ -189,12 +189,12 @@ export default {
     update${className}() {
       this.$refs['dataForm'].validate((valid) => {
         if (valid) {
-          const tempData = Object.assign({}, this.${className}Data)
+          const tempData = Object.assign({}, this.${objName}Data)
           edit${className}(tempData).then(() => {
             for (const v of this.list) {
-              if (v.id === this.${className}Data.id) {
+              if (v.id === this.${objName}Data.id) {
                 const index = this.list.indexOf(v)
-                this.list.splice(index, 1, this.${className}Data)
+                this.list.splice(index, 1, this.${objName}Data)
                 break
               }
             }
@@ -211,44 +211,46 @@ export default {
     },
     del${className}(row) {
       row.status = 0
-      update${className}Status(row, 0)
-      this.$notify({
-        title: '成功',
-        message: '删除成功',
-        type: 'success',
-        duration: 2000
+      this.update${className}Status(row, 0).then(() => {
+        this.$notify({
+          title: '成功',
+          message: '删除成功',
+          type: 'success',
+          duration: 2000
+        })
+        const index = this.list.indexOf(row)
+        this.list.splice(index, 1)
       })
-      const index = this.list.indexOf(row)
-      this.list.splice(index, 1)
     },
     reuse${className}(row) {
       row.status = 1
-      update${className}Status(row, 1)
-      this.$notify({
-        title: '成功',
-        message: '数据恢复成功',
-        type: 'success',
-        duration: 2000
+      this.update${className}Status(row, 1).then(() => {
+        this.$notify({
+          title: '成功',
+          message: '数据恢复成功',
+          type: 'success',
+          duration: 2000
+        })
+        const index = this.list.indexOf(row)
+        this.list.splice(index, 1)
       })
-      const index = this.list.indexOf(row)
-      this.list.splice(index, 1)
     },
     update${className}Status(row, status) {
       row.status = status
-        edit${className}Status(row.lid, status).then(() => {
-        this.${className}Data = Object.assign({}, row)
-        this.${className}Data.status = status
+      edit${className}Status(row.lid, status).then(() => {
+        this.${objName}Data = Object.assign({}, row)
+        this.${objName}Data.status = status
         for (const v of this.list) {
-          if (v.id === this.${className}Data.id) {
+          if (v.id === this.${objName}Data.id) {
             const index = this.list.indexOf(v)
-            this.list.splice(index, 1, this.${className}Data)
+            this.list.splice(index, 1, this.${objName}Data)
             break
           }
         }
       })
       this.$message({
-          message: '操作成功',
-          type: 'success'
+        message: '操作成功',
+        type: 'success'
       })
     }
   }

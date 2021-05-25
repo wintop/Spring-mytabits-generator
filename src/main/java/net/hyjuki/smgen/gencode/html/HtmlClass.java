@@ -6,7 +6,7 @@ import freemarker.template.Template;
 import freemarker.template.TemplateException;
 import freemarker.template.TemplateExceptionHandler;
 import net.hyjuki.smgen.base.utils.GenUtils;
-import net.hyjuki.smgen.db.TableColumn;
+import net.hyjuki.smgen.model.TableColumn;
 import org.apache.tomcat.util.http.fileupload.FileUtils;
 import org.springframework.util.ResourceUtils;
 

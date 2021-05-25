@@ -1,7 +1,7 @@
 package net.hyjuki.smgen.gencode.xml;
 
 import net.hyjuki.smgen.base.utils.GenUtils;
-import net.hyjuki.smgen.db.TableColumn;
+import net.hyjuki.smgen.model.TableColumn;
 import net.hyjuki.smgen.gencode.xml.base.TextElement;
 
 import java.util.List;
@@ -17,7 +17,7 @@ public class ColumnElement extends TextElement {
     }
     public void setColumn(List<TableColumn> columns) {
         for (TableColumn column: columns) {
-            addElement(column.getColumnName());
+            addElement(column.getName());
         }
     }
 

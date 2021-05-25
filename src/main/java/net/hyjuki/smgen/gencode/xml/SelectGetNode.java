@@ -29,16 +29,18 @@ public class SelectGetNode extends NodeElement {
         addAttribute(MapperConstants.ID, idValue);
     }
 
-    public void setElements(PrimaryKey key) {
+    public void setElements(List<PrimaryKey> keys) {
         TextElement select = new SelectElement(tableName);
         select.setNormalize(false);
-        if (key != null) {
-            addAttribute(MapperConstants.PARAMETER_TYPE,
-                    DbDataType.getInstance().getFullName(key.getDateType()));
+        if (keys != null) {
+            if (keys.size() == 1) {
+                addAttribute(MapperConstants.PARAMETER_TYPE,
+                        DbDataType.getInstance().getFullName(keys.get(0).getDateType()));
+            }
         }
         addAttribute(MapperConstants.RESULT_MAP, resultMap);
         addElement(select);
-        addElement(new WhereKeyElement(key));
+        addElement(new WhereKeyElement(keys));
     }
 
     public void setElements(Table table) {

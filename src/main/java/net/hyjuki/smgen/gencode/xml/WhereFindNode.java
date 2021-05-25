@@ -1,7 +1,7 @@
 package net.hyjuki.smgen.gencode.xml;
 
 import net.hyjuki.smgen.base.utils.GenUtils;
-import net.hyjuki.smgen.db.TableColumn;
+import net.hyjuki.smgen.model.TableColumn;
 import net.hyjuki.smgen.gencode.xml.base.MapperConstants;
 import net.hyjuki.smgen.gencode.xml.base.NodeElement;
 
@@ -20,7 +20,7 @@ public class WhereFindNode extends NodeElement {
     public void setElement(List<TableColumn> columns) {
         for (TableColumn column: columns) {
             IfNode ifNode = new IfNode();
-            ifNode.setWhereElement(column.getColumnName());
+            ifNode.setWhereElement(column.getName());
             this.addElement(ifNode);
         }
     }
@@ -33,7 +33,7 @@ public class WhereFindNode extends NodeElement {
     public void setElement(String obj, List<TableColumn> columns) {
         for (TableColumn column: columns) {
             IfNode ifNode = new IfNode();
-            ifNode.setWhereElement(obj, column.getColumnName(), "=");
+            ifNode.setWhereElement(obj, column.getName(), "=");
             this.addElement(ifNode);
         }
     }
@@ -47,7 +47,7 @@ public class WhereFindNode extends NodeElement {
     public void setElement(String obj, List<TableColumn> columns, String operator) {
         for (TableColumn column: columns) {
             IfNode ifNode = new IfNode();
-            ifNode.setWhereElement(obj, column.getColumnName(), operator);
+            ifNode.setWhereElement(obj, column.getName(), operator);
             this.addElement(ifNode);
         }
     }

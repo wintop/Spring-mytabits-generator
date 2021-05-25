@@ -17,10 +17,11 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
+@RequestMapping("page/")
 public class GeneratorController {
     private FileDirConfig fileDirConfig;
     private DbInformation dbInformation;
-    @RequestMapping("/setConfig")
+    @RequestMapping("setConfig")
     public List<Table> getTables(String url, String user, String password, String tableCat,
                       String rootDir, String projectName, String packageName, String[] fileDir, String[] methodName,
                       String xmlDir, String modelDir, String daoDir, String serviceDir, String implDir,

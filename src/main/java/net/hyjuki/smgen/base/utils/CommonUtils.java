@@ -1,9 +1,8 @@
 package net.hyjuki.smgen.base.utils;
 
+import java.lang.reflect.Method;
 import java.text.SimpleDateFormat;
-import java.util.Collection;
-import java.util.Date;
-import java.util.Random;
+import java.util.*;
 
 public class CommonUtils {
     public static boolean isEmpty(String string) {
@@ -55,4 +54,25 @@ public class CommonUtils {
 
         return sb.toString();
     }
+
+    /**
+     *  这个方法好像不一定能提高效率
+     * @param collection
+     * @param method
+     * @param <T>
+     * @return
+     * @throws ReflectiveOperationException
+     */
+    @Deprecated
+    public static <T> Map<Object, T> listToMap(Collection<T> collection, Method method)
+            throws ReflectiveOperationException {
+        Map<Object, T> map = new HashMap<>();
+        for (T t: collection) {
+            Object id = method.invoke(t);
+            map.put(id, t);
+        }
+
+        return map;
+    }
+
 }

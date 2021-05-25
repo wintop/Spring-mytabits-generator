@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace = "net.hyjuki.smgen.dao.UserAccountDao">
+	<resultMap type = "UserAccount" id = "UserAccountMap">
+		<result column = "id" property = "id" />
+		<result column = "user_name" property = "userName" />
+		<result column = "password" property = "password" />
+		<result column = "salt" property = "salt" />
+		<result column = "role_id" property = "roleId" />
+		<result column = "user_id" property = "userId" />
+		<result column = "create_time" property = "createTime" />
+		<result column = "login_time" property = "loginTime" />
+		<result column = "status" property = "status" />
+	</resultMap>
+	
+	<sql id = "column_list">
+		id, user_name, password, salt, 
+		role_id, user_id, create_time, login_time, status
+	</sql>
+	
+	<insert id = "save" parameterType = "UserAccount">
+		insert into user_account (
+			user_name, password, salt, role_id, 
+			user_id, create_time, login_time, status
+		) values (
+			#{userName}, #{password}, #{salt}, #{roleId}, 
+			#{userId}, #{createTime}, #{loginTime}, #{status}
+		)
+	</insert>
+	
+	<select id = "get" parameterType = "java.lang.Long" resultMap = "UserAccountMap">
+		select <include refid = "column_list" /> from user_account
+		where id = #{id}
+	</select>
+
+	<select id = "getByUserName" parameterType = "java.lang.String" resultMap = "UserAccountMap">
+		select <include refid = "column_list" /> from user_account
+		where user_name = #{userName}
+	</select>
+
+	<select id = "find" parameterType = "UserAccount" resultMap = "UserAccountMap">
+		select <include refid = "column_list" /> from user_account
+		<where>
+			<if test = "id != null">and id = #{id}</if>
+			<if test = "userName != null">and user_name = #{userName}</if>
+			<if test = "password != null">and password = #{password}</if>
+			<if test = "salt != null">and salt = #{salt}</if>
+			<if test = "roleId != null">and role_id = #{roleId}</if>
+			<if test = "userId != null">and user_id = #{userId}</if>
+			<if test = "createTime != null">and create_time = #{createTime}</if>
+			<if test = "loginTime != null">and login_time = #{loginTime}</if>
+			<if test = "status != null">and status = #{status}</if>
+		</where>
+	</select>
+	
+	<select id = "pagination" parameterType = "java.lang.Object" resultMap = "UserAccountMap">
+		select <include refid = "column_list" /> from user_account
+		<where>
+			<if test = "t.id != null">and id = #{t.id}</if>
+			<if test = "t.userName != null">and user_name = #{t.userName}</if>
+			<if test = "t.password != null">and password = #{t.password}</if>
+			<if test = "t.salt != null">and salt = #{t.salt}</if>
+			<if test = "t.roleId != null">and role_id = #{t.roleId}</if>
+			<if test = "t.userId != null">and user_id = #{t.userId}</if>
+			<if test = "t.createTime != null">and create_time = #{t.createTime}</if>
+			<if test = "t.loginTime != null">and login_time = #{t.loginTime}</if>
+			<if test = "t.status != null">and status = #{t.status}</if>
+		</where>
+		order by id desc
+		limit #{page.pageNo}, #{page.pageSize}
+	</select>
+	
+	<select id = "total" parameterType = "UserAccount" resultType = "java.lang.Long">
+		select count(*) from user_account
+		<where>
+			<if test = "id != null">and id = #{id}</if>
+			<if test = "userName != null">and user_name = #{userName}</if>
+			<if test = "password != null">and password = #{password}</if>
+			<if test = "salt != null">and salt = #{salt}</if>
+			<if test = "roleId != null">and role_id = #{roleId}</if>
+			<if test = "userId != null">and user_id = #{userId}</if>
+			<if test = "createTime != null">and create_time = #{createTime}</if>
+			<if test = "loginTime != null">and login_time = #{loginTime}</if>
+			<if test = "status != null">and status = #{status}</if>
+		</where>
+	</select>
+	
+	<update id = "update" parameterType = "UserAccount">
+		update user_account
+		<set>
+			<if test = "userName != null">user_name = #{userName},</if>
+			<if test = "password != null">password = #{password},</if>
+			<if test = "salt != null">salt = #{salt},</if>
+			<if test = "roleId != null">role_id = #{roleId},</if>
+			<if test = "userId != null">user_id = #{userId},</if>
+			<if test = "createTime != null">create_time = #{createTime},</if>
+			<if test = "loginTime != null">login_time = #{loginTime},</if>
+			<if test = "status != null">status = #{status},</if>
+		</set>
+		where id = #{id}
+	</update>
+	
+	<delete id = "remove" parameterType = "java.lang.Long">
+		delete from user_account
+		where id = #{id}
+	</delete>
+</mapper>

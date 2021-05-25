@@ -18,6 +18,18 @@ spring:
   transaction:
     rollback-on-commit-failure: true
 
+  # REDIS (RedisProperties)
+  redis:
+    database: 0
+    host: localhost
+    port: 6379
+    password:
+    jedis.pool.max-active: 8
+    jedis.pool.max-wait: -1
+    jedis.pool.max-idle: 8
+    lettuce.pool.min-idle: 0
+    # connet time out (ms)
+    timeout: 5000
 ## logging
 logging:
   level:

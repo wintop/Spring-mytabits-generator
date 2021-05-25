@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace = "net.hyjuki.smgen.dao.IndexColumnDao">
+	<resultMap type = "IndexColumn" id = "IndexColumnMap">
+		<result column = "id" property = "id" />
+		<result column = "idx_id" property = "idxId" />
+		<result column = "col_name" property = "colName" />
+		<result column = "data_type" property = "dataType" />
+		<result column = "sort" property = "sort" />
+		<result column = "table_id" property = "tableId" />
+		<result column = "db_id" property = "dbId" />
+		<result column = "user_id" property = "userId" />
+		<result column = "create_time" property = "createTime" />
+	</resultMap>
+	
+	<sql id = "column_list">
+		id, idx_id, col_name, data_type, 
+		sort, table_id, db_id, user_id, create_time
+	</sql>
+	
+	<insert id = "save" parameterType = "IndexColumn">
+		insert into index_column (
+			idx_id, col_name, data_type, sort, 
+			table_id, db_id, user_id, create_time
+		) values (
+			#{idxId}, #{colName}, #{dataType}, #{sort}, 
+			#{tableId}, #{dbId}, #{userId}, #{createTime}
+		)
+	</insert>
+	
+	<select id = "get" parameterType = "java.lang.Integer" resultMap = "IndexColumnMap">
+		select <include refid = "column_list" /> from index_column
+		where id = #{id}
+	</select>
+	
+	<select id = "find" parameterType = "IndexColumn" resultMap = "IndexColumnMap">
+		select <include refid = "column_list" /> from index_column
+		<where>
+			<if test = "id != null">and id = #{id}</if>
+			<if test = "idxId != null">and idx_id = #{idxId}</if>
+			<if test = "colName != null">and col_name = #{colName}</if>
+			<if test = "dataType != null">and data_type = #{dataType}</if>
+			<if test = "sort != null">and sort = #{sort}</if>
+			<if test = "tableId != null">and table_id = #{tableId}</if>
+			<if test = "dbId != null">and db_id = #{dbId}</if>
+			<if test = "userId != null">and user_id = #{userId}</if>
+			<if test = "createTime != null">and create_time = #{createTime}</if>
+		</where>
+	</select>
+	
+	<select id = "pagination" parameterType = "java.lang.Object" resultMap = "IndexColumnMap">
+		select <include refid = "column_list" /> from index_column
+		<where>
+			<if test = "t.id != null">and id = #{t.id}</if>
+			<if test = "t.idxId != null">and idx_id = #{t.idxId}</if>
+			<if test = "t.colName != null">and col_name = #{t.colName}</if>
+			<if test = "t.dataType != null">and data_type = #{t.dataType}</if>
+			<if test = "t.sort != null">and sort = #{t.sort}</if>
+			<if test = "t.tableId != null">and table_id = #{t.tableId}</if>
+			<if test = "t.dbId != null">and db_id = #{t.dbId}</if>
+			<if test = "t.userId != null">and user_id = #{t.userId}</if>
+			<if test = "t.createTime != null">and create_time = #{t.createTime}</if>
+		</where>
+		order by id desc
+		limit #{page.pageNo}, #{page.pageSize}
+	</select>
+	
+	<select id = "total" parameterType = "IndexColumn" resultType = "java.lang.Long">
+		select count(*) from index_column
+		<where>
+			<if test = "id != null">and id = #{id}</if>
+			<if test = "idxId != null">and idx_id = #{idxId}</if>
+			<if test = "colName != null">and col_name = #{colName}</if>
+			<if test = "dataType != null">and data_type = #{dataType}</if>
+			<if test = "sort != null">and sort = #{sort}</if>
+			<if test = "tableId != null">and table_id = #{tableId}</if>
+			<if test = "dbId != null">and db_id = #{dbId}</if>
+			<if test = "userId != null">and user_id = #{userId}</if>
+			<if test = "createTime != null">and create_time = #{createTime}</if>
+		</where>
+	</select>
+	
+	<update id = "update" parameterType = "IndexColumn">
+		update index_column
+		<set>
+			<if test = "idxId != null">idx_id = #{idxId},</if>
+			<if test = "colName != null">col_name = #{colName},</if>
+			<if test = "dataType != null">data_type = #{dataType},</if>
+			<if test = "sort != null">sort = #{sort},</if>
+			<if test = "tableId != null">table_id = #{tableId},</if>
+			<if test = "dbId != null">db_id = #{dbId},</if>
+			<if test = "userId != null">user_id = #{userId},</if>
+			<if test = "createTime != null">create_time = #{createTime},</if>
+		</set>
+		where id = #{id}
+	</update>
+	
+	<delete id = "remove" parameterType = "java.lang.Integer">
+		delete from index_column
+		where id = #{id}
+	</delete>
+</mapper>

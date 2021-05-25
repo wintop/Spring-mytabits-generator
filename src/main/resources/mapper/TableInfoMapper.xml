@@ -2,31 +2,40 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace = "net.hyjuki.genconfig.dao.TableInfoDao">
+<mapper namespace = "net.hyjuki.smgen.dao.TableInfoDao">
 	<resultMap type = "TableInfo" id = "TableInfoMap">
 		<result column = "id" property = "id" />
 		<result column = "name" property = "name" />
-		<result column = "schm_name" property = "schmName" />
+		<result column = "label" property = "label" />
 		<result column = "engine" property = "engine" />
 		<result column = "charset" property = "charset" />
 		<result column = "comment" property = "comment" />
 		<result column = "cache" property = "cache" />
+		<result column = "ret_primary" property = "retPrimary" />
 		<result column = "au_show" property = "auShow" />
 		<result column = "detail_show" property = "detailShow" />
+		<result column = "db_name" property = "dbName" />
+		<result column = "db_id" property = "dbId" />
+		<result column = "user_id" property = "userId" />
+		<result column = "create_time" property = "createTime" />
 	</resultMap>
 	
 	<sql id = "column_list">
-		id, name, schm_name, engine, 
-		charset, comment, cache, au_show, detail_show
+		id, name, label, engine, 
+		charset, comment, cache, ret_primary, 
+		au_show, detail_show, db_name, db_id,
+		user_id, create_time
 	</sql>
 	
 	<insert id = "save" parameterType = "TableInfo">
 		insert into table_info (
-			name, schm_name, engine, charset, 
-			comment, cache, au_show, detail_show
+			name, label, engine, charset, 
+			comment, cache, ret_primary, au_show, 
+			detail_show, db_name, db_id, user_id, create_time
 		) values (
-			#{name}, #{schmName}, #{engine}, #{charset}, 
-			#{comment}, #{cache}, #{auShow}, #{detailShow}
+			#{name}, #{label}, #{engine}, #{charset}, 
+			#{comment}, #{cache}, #{retPrimary}, #{auShow}, 
+			#{detailShow}, #{dbName}, #{dbId}, #{userId}, #{createTime}
 		)
 	</insert>
 	
@@ -40,13 +49,60 @@
 		<where>
 			<if test = "id != null">and id = #{id}</if>
 			<if test = "name != null">and name = #{name}</if>
-			<if test = "schmName != null">and schm_name = #{schmName}</if>
+			<if test = "label != null">and label = #{label}</if>
 			<if test = "engine != null">and engine = #{engine}</if>
 			<if test = "charset != null">and charset = #{charset}</if>
 			<if test = "comment != null">and comment = #{comment}</if>
 			<if test = "cache != null">and cache = #{cache}</if>
+			<if test = "retPrimary != null">and ret_primary = #{retPrimary}</if>
 			<if test = "auShow != null">and au_show = #{auShow}</if>
 			<if test = "detailShow != null">and detail_show = #{detailShow}</if>
+			<if test = "dbName != null">and db_name = #{dbName}</if>
+			<if test = "dbId != null">and db_id = #{dbId}</if>
+			<if test = "userId != null">and user_id = #{userId}</if>
+			<if test = "createTime != null">and create_time = #{createTime}</if>
+		</where>
+	</select>
+	
+	<select id = "pagination" parameterType = "java.lang.Object" resultMap = "TableInfoMap">
+		select <include refid = "column_list" /> from table_info
+		<where>
+			<if test = "t.id != null">and id = #{t.id}</if>
+			<if test = "t.name != null">and name = #{t.name}</if>
+			<if test = "t.label != null">and label = #{t.label}</if>
+			<if test = "t.engine != null">and engine = #{t.engine}</if>
+			<if test = "t.charset != null">and charset = #{t.charset}</if>
+			<if test = "t.comment != null">and comment = #{t.comment}</if>
+			<if test = "t.cache != null">and cache = #{t.cache}</if>
+			<if test = "t.retPrimary != null">and ret_primary = #{t.retPrimary}</if>
+			<if test = "t.auShow != null">and au_show = #{t.auShow}</if>
+			<if test = "t.detailShow != null">and detail_show = #{t.detailShow}</if>
+			<if test = "t.dbName != null">and db_name = #{t.dbName}</if>
+			<if test = "t.dbId != null">and db_id = #{t.dbId}</if>
+			<if test = "t.userId != null">and user_id = #{t.userId}</if>
+			<if test = "t.createTime != null">and create_time = #{t.createTime}</if>
+		</where>
+		order by id desc
+		limit #{page.pageNo}, #{page.pageSize}
+	</select>
+	
+	<select id = "total" parameterType = "TableInfo" resultType = "java.lang.Long">
+		select count(*) from table_info
+		<where>
+			<if test = "id != null">and id = #{id}</if>
+			<if test = "name != null">and name = #{name}</if>
+			<if test = "label != null">and label = #{label}</if>
+			<if test = "engine != null">and engine = #{engine}</if>
+			<if test = "charset != null">and charset = #{charset}</if>
+			<if test = "comment != null">and comment = #{comment}</if>
+			<if test = "cache != null">and cache = #{cache}</if>
+			<if test = "retPrimary != null">and ret_primary = #{retPrimary}</if>
+			<if test = "auShow != null">and au_show = #{auShow}</if>
+			<if test = "detailShow != null">and detail_show = #{detailShow}</if>
+			<if test = "dbName != null">and db_name = #{dbName}</if>
+			<if test = "dbId != null">and db_id = #{dbId}</if>
+			<if test = "userId != null">and user_id = #{userId}</if>
+			<if test = "createTime != null">and create_time = #{createTime}</if>
 		</where>
 	</select>
 	
@@ -54,13 +110,18 @@
 		update table_info
 		<set>
 			<if test = "name != null">name = #{name},</if>
-			<if test = "schmName != null">schm_name = #{schmName},</if>
+			<if test = "label != null">label = #{label},</if>
 			<if test = "engine != null">engine = #{engine},</if>
 			<if test = "charset != null">charset = #{charset},</if>
 			<if test = "comment != null">comment = #{comment},</if>
 			<if test = "cache != null">cache = #{cache},</if>
+			<if test = "retPrimary != null">ret_primary = #{retPrimary},</if>
 			<if test = "auShow != null">au_show = #{auShow},</if>
 			<if test = "detailShow != null">detail_show = #{detailShow},</if>
+			<if test = "dbName != null">db_name = #{dbName},</if>
+			<if test = "dbId != null">db_id = #{dbId},</if>
+			<if test = "userId != null">user_id = #{userId},</if>
+			<if test = "createTime != null">create_time = #{createTime},</if>
 		</set>
 		where id = #{id}
 	</update>

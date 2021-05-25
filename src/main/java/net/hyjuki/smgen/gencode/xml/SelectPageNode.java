@@ -2,10 +2,9 @@ package net.hyjuki.smgen.gencode.xml;
 
 import net.hyjuki.smgen.base.utils.GenUtils;
 import net.hyjuki.smgen.db.PrimaryKey;
-import net.hyjuki.smgen.db.TableColumn;
+import net.hyjuki.smgen.model.TableColumn;
 import net.hyjuki.smgen.gencode.xml.base.MapperConstants;
 import net.hyjuki.smgen.gencode.xml.base.NodeElement;
-import net.hyjuki.smgen.gencode.xml.base.SelectSort;
 import net.hyjuki.smgen.gencode.xml.base.TextElement;
 
 import java.util.ArrayList;
@@ -37,7 +36,7 @@ public class SelectPageNode extends NodeElement {
         addAttribute(MapperConstants.ID, idValue);
     }
 
-    public void setElements(String obj, List<TableColumn> columns, PrimaryKey key,
+    public void setElements(String obj, List<TableColumn> columns, List<PrimaryKey> keys,
                 String pageNo, String pageSize) {
         TextElement select = new SelectElement(tableName);
         select.setNormalize(false);
@@ -45,16 +44,20 @@ public class SelectPageNode extends NodeElement {
         WhereFindNode whereFindNode = new WhereFindNode();
         whereFindNode.setElement(obj, columns);
         this.addElement(whereFindNode);
-        if (key != null) {
-            this.setSort(MapperConstants.DESC, GenUtils.getProperty(key.getColumnName()));
+        if (keys != null) {
+            List<String> list = new ArrayList<>();
+            for (PrimaryKey key: keys) {
+                list.add(GenUtils.getProperty(key.getColumnName()));
+            }
+            this.setSort(MapperConstants.DESC, list);
             this.addElement(this.sortElement);
         }
         this.setLimit(pageNo, pageSize);
         this.addElement(this.limitElement);
     }
 
-    public void setElements(String obj, List<TableColumn> columns, PrimaryKey key) {
-        this.setElements(obj, columns, key, "page.pageNo", "paeg.pageSizes");
+    public void setElements(String obj, List<TableColumn> columns, List<PrimaryKey> keys) {
+        this.setElements(obj, columns, keys, "page.pageNo", "paeg.pageSizes");
     }
 
     /**

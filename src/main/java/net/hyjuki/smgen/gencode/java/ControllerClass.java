@@ -9,7 +9,7 @@ import net.hyjuki.smgen.gencode.java.base.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ControllerClass extends ClassTemplate {
+public class ControllerClass extends ClassAdapter {
     private String baseName;
     private String serviceName;
     private TypeClass loggerType = new TypeClass(JavaConstants.LOGGER, JavaConstants.PACKAGE_LOGGER);
@@ -103,8 +103,8 @@ public class ControllerClass extends ClassTemplate {
 //            paramId.add(new Parameter(key.getColumnName(), DataType.getName(key.getDateType())));
 //        }
         // get 参数
-        if (table.getPrimaryKey() != null) {
-            paramId.add(new Parameter(DbDataType.getInstance().getName(table.getPrimaryKey().getDateType()), "id"));
+        if (table.getPrimaryKeys() != null) {
+            paramId.add(new Parameter(DbDataType.getInstance().getName(table.getPrimaryKeys().get(0).getDateType()), "id"));
         }
         // add edit list 参数
         Parameter param = new Parameter(this.model,
@@ -118,7 +118,7 @@ public class ControllerClass extends ClassTemplate {
         paramStatus.add(new Parameter(Byte.class.getSimpleName(), "status"));
 
         // get方法：public T get(Number id);
-        if (table.getPrimaryKey() != null) {
+        if (table.getPrimaryKeys() != null) {
             body.addMethod(setClassMethod(this.getMethod, BaseMethod.get.name(), paramId, this.model, BaseMethod.get));
         }
         body.addMethod(setClassMethod(this.listMethod, BaseMethod.list.name(), paramModel,

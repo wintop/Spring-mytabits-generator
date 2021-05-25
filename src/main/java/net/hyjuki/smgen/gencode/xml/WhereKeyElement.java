@@ -8,10 +8,16 @@ import net.hyjuki.smgen.gencode.xml.base.TextElement;
 import java.util.List;
 
 public class WhereKeyElement extends TextElement {
-    public WhereKeyElement(PrimaryKey key) {
+    public WhereKeyElement(List<PrimaryKey> keys) {
         addElement(MapperConstants.WHERE);
-        addElement(renderCondition(key.getColumnName()));
+        for (int i = 0; i < keys.size(); i++) {
+            if (i > 0) {
+                addElement(MapperConstants.AND);
+            }
+            addElement(renderCondition(keys.get(i).getColumnName()));
+        }
         setSeperator(" ");
+
     }
 
     private String renderCondition(String column) {

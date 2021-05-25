@@ -2,14 +2,17 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace = "net.hyjuki.genconfig.dao.TableColumnDao">
+<mapper namespace = "net.hyjuki.smgen.dao.TableColumnDao">
 	<resultMap type = "TableColumn" id = "TableColumnMap">
 		<result column = "id" property = "id" />
-		<result column = "table_name" property = "tableName" />
+		<result column = "table_id" property = "tableId" />
+		<result column = "db_id" property = "dbId" />
 		<result column = "name" property = "name" />
+		<result column = "label" property = "label" />
 		<result column = "data_type" property = "dataType" />
+		<result column = "data_length" property = "dataLength" />
 		<result column = "sort" property = "sort" />
-		<result column = "is_null" property = "isNull" />
+		<result column = "nullable" property = "nullable" />
 		<result column = "auto_increment" property = "autoIncrement" />
 		<result column = "default_value" property = "defaultValue" />
 		<result column = "comment" property = "comment" />
@@ -19,26 +22,31 @@
 		<result column = "add_type" property = "addType" />
 		<result column = "update_type" property = "updateType" />
 		<result column = "query_type" property = "queryType" />
+		<result column = "user_id" property = "userId" />
+		<result column = "create_time" property = "createTime" />
 	</resultMap>
 	
 	<sql id = "column_list">
-		id, table_name, name, data_type, 
-		sort, is_null, auto_increment, default_value, 
-		comment, edit_element, data, data_from, 
-		add_type, update_type, query_type
+		id, table_id, db_id, name, 
+		label, data_type, data_length, sort,
+		nullable, auto_increment, default_value, comment,
+		edit_element, data, data_from, add_type, 
+		update_type, query_type, user_id, create_time
 	</sql>
 	
 	<insert id = "save" parameterType = "TableColumn">
 		insert into table_column (
-			table_name, name, data_type, sort, 
-			is_null, auto_increment, default_value, comment, 
-			edit_element, data, data_from, add_type, 
-			update_type, query_type
+			table_id, db_id, name, label, 
+			data_type, data_length, sort, nullable,
+			auto_increment, default_value, comment, edit_element, 
+			data, data_from, add_type, update_type, 
+			query_type, user_id, create_time
 		) values (
-			#{tableName}, #{name}, #{dataType}, #{sort}, 
-			#{isNull}, #{autoIncrement}, #{defaultValue}, #{comment}, 
-			#{editElement}, #{data}, #{dataFrom}, #{addType}, 
-			#{updateType}, #{queryType}
+			#{tableId}, #{dbId}, #{name}, #{label}, 
+			#{dataType}, #{dataLength}, #{sort}, #{nullable},
+			#{autoIncrement}, #{defaultValue}, #{comment}, #{editElement}, 
+			#{data}, #{dataFrom}, #{addType}, #{updateType}, 
+			#{queryType}, #{userId}, #{createTime}
 		)
 	</insert>
 	
@@ -51,11 +59,14 @@
 		select <include refid = "column_list" /> from table_column
 		<where>
 			<if test = "id != null">and id = #{id}</if>
-			<if test = "tableName != null">and table_name = #{tableName}</if>
+			<if test = "tableId != null">and table_id = #{tableId}</if>
+			<if test = "dbId != null">and db_id = #{dbId}</if>
 			<if test = "name != null">and name = #{name}</if>
+			<if test = "label != null">and label = #{label}</if>
 			<if test = "dataType != null">and data_type = #{dataType}</if>
+			<if test = "dataLength != null">and data_length = #{dataLength}</if>
 			<if test = "sort != null">and sort = #{sort}</if>
-			<if test = "isNull != null">and is_null = #{isNull}</if>
+			<if test = "nullable != null">and nullable = #{nullable}</if>
 			<if test = "autoIncrement != null">and auto_increment = #{autoIncrement}</if>
 			<if test = "defaultValue != null">and default_value = #{defaultValue}</if>
 			<if test = "comment != null">and comment = #{comment}</if>
@@ -65,17 +76,76 @@
 			<if test = "addType != null">and add_type = #{addType}</if>
 			<if test = "updateType != null">and update_type = #{updateType}</if>
 			<if test = "queryType != null">and query_type = #{queryType}</if>
+			<if test = "userId != null">and user_id = #{userId}</if>
+			<if test = "createTime != null">and create_time = #{createTime}</if>
+		</where>
+	</select>
+	
+	<select id = "pagination" parameterType = "java.lang.Object" resultMap = "TableColumnMap">
+		select <include refid = "column_list" /> from table_column
+		<where>
+			<if test = "t.id != null">and id = #{t.id}</if>
+			<if test = "t.tableId != null">and table_id = #{t.tableId}</if>
+			<if test = "t.dbId != null">and db_id = #{t.dbId}</if>
+			<if test = "t.name != null">and name = #{t.name}</if>
+			<if test = "t.label != null">and label = #{t.label}</if>
+			<if test = "t.dataType != null">and data_type = #{t.dataType}</if>
+			<if test = "t.dataLength != null">and data_length = #{t.dataLength}</if>
+			<if test = "t.sort != null">and sort = #{t.sort}</if>
+			<if test = "t.nullable != null">and nullable = #{t.nullable}</if>
+			<if test = "t.autoIncrement != null">and auto_increment = #{t.autoIncrement}</if>
+			<if test = "t.defaultValue != null">and default_value = #{t.defaultValue}</if>
+			<if test = "t.comment != null">and comment = #{t.comment}</if>
+			<if test = "t.editElement != null">and edit_element = #{t.editElement}</if>
+			<if test = "t.data != null">and data = #{t.data}</if>
+			<if test = "t.dataFrom != null">and data_from = #{t.dataFrom}</if>
+			<if test = "t.addType != null">and add_type = #{t.addType}</if>
+			<if test = "t.updateType != null">and update_type = #{t.updateType}</if>
+			<if test = "t.queryType != null">and query_type = #{t.queryType}</if>
+			<if test = "t.userId != null">and user_id = #{t.userId}</if>
+			<if test = "t.createTime != null">and create_time = #{t.createTime}</if>
+		</where>
+		order by id desc
+		limit #{page.pageNo}, #{page.pageSize}
+	</select>
+	
+	<select id = "total" parameterType = "TableColumn" resultType = "java.lang.Long">
+		select count(*) from table_column
+		<where>
+			<if test = "id != null">and id = #{id}</if>
+			<if test = "tableId != null">and table_id = #{tableId}</if>
+			<if test = "dbId != null">and db_id = #{dbId}</if>
+			<if test = "name != null">and name = #{name}</if>
+			<if test = "label != null">and label = #{label}</if>
+			<if test = "dataType != null">and data_type = #{dataType}</if>
+			<if test = "dataLength != null">and data_length = #{dataLength}</if>
+			<if test = "sort != null">and sort = #{sort}</if>
+			<if test = "nullable != null">and nullable = #{nullable}</if>
+			<if test = "autoIncrement != null">and auto_increment = #{autoIncrement}</if>
+			<if test = "defaultValue != null">and default_value = #{defaultValue}</if>
+			<if test = "comment != null">and comment = #{comment}</if>
+			<if test = "editElement != null">and edit_element = #{editElement}</if>
+			<if test = "data != null">and data = #{data}</if>
+			<if test = "dataFrom != null">and data_from = #{dataFrom}</if>
+			<if test = "addType != null">and add_type = #{addType}</if>
+			<if test = "updateType != null">and update_type = #{updateType}</if>
+			<if test = "queryType != null">and query_type = #{queryType}</if>
+			<if test = "userId != null">and user_id = #{userId}</if>
+			<if test = "createTime != null">and create_time = #{createTime}</if>
 		</where>
 	</select>
 	
 	<update id = "update" parameterType = "TableColumn">
 		update table_column
 		<set>
-			<if test = "tableName != null">table_name = #{tableName},</if>
+			<if test = "tableId != null">table_id = #{tableId},</if>
+			<if test = "dbId != null">db_id = #{dbId},</if>
 			<if test = "name != null">name = #{name},</if>
+			<if test = "label != null">label = #{label},</if>
 			<if test = "dataType != null">data_type = #{dataType},</if>
+			<if test = "dataLength != null">data_length = #{dataLength},</if>
 			<if test = "sort != null">sort = #{sort},</if>
-			<if test = "isNull != null">is_null = #{isNull},</if>
+			<if test = "nullable != null">nullable = #{nullable},</if>
 			<if test = "autoIncrement != null">auto_increment = #{autoIncrement},</if>
 			<if test = "defaultValue != null">default_value = #{defaultValue},</if>
 			<if test = "comment != null">comment = #{comment},</if>
@@ -85,6 +155,8 @@
 			<if test = "addType != null">add_type = #{addType},</if>
 			<if test = "updateType != null">update_type = #{updateType},</if>
 			<if test = "queryType != null">query_type = #{queryType},</if>
+			<if test = "userId != null">user_id = #{userId},</if>
+			<if test = "createTime != null">create_time = #{createTime},</if>
 		</set>
 		where id = #{id}
 	</update>

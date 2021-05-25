@@ -1,5 +1,9 @@
 package net.hyjuki.smgen.db;
 
+import net.hyjuki.smgen.base.utils.GenUtils;
+import net.hyjuki.smgen.model.TableColumn;
+
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -7,7 +11,7 @@ public class Table {
     private String tableCat;
     private String tableName;
     private String remarks;
-    private PrimaryKey primaryKey;
+    private List<PrimaryKey> primaryKeys;
     private List<TableColumn> columns;
 
     public Table(String tableName, String tableCat, String remarks) {
@@ -40,12 +44,30 @@ public class Table {
         this.remarks = remarks;
     }
 
-    public PrimaryKey getPrimaryKey() {
-        return primaryKey;
+    public List<PrimaryKey> getPrimaryKeys() {
+        return primaryKeys;
     }
 
-    public void setPrimaryKey(PrimaryKey primaryKey) {
-        this.primaryKey = primaryKey;
+    public void setPrimaryKey(List<PrimaryKey> primaryKeys) {
+        this.primaryKeys = primaryKeys;
+    }
+
+    public void setPrimaryKeys(PrimaryKey... primaryKeys) {
+        if(GenUtils.isEmpty(this.primaryKeys)) {
+            this.primaryKeys = new ArrayList<>();
+        }
+        if (primaryKeys != null) {
+            for (PrimaryKey primaryKey: primaryKeys) {
+                this.primaryKeys.add(primaryKey);
+            }
+        }
+    }
+
+    public void addPrimaryKey(PrimaryKey primaryKey) {
+        if(GenUtils.isEmpty(this.primaryKeys)) {
+            this.primaryKeys = new ArrayList<>();
+        }
+        this.primaryKeys.add(primaryKey);
     }
 
     public List<TableColumn> getColumns() {
@@ -62,7 +84,7 @@ public class Table {
                 "tableCat='" + tableCat + '\'' +
                 ", tableName='" + tableName + '\'' +
                 ", remarks='" + remarks + '\'' +
-                ", primaryKey=" + primaryKey +
+                ", primaryKeys=" + Arrays.toString(primaryKeys.toArray()) +
                 ", columns=" + Arrays.toString(columns.toArray()) +
                 '}';
     }

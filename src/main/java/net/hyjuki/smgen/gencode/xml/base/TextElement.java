@@ -26,7 +26,7 @@ public class TextElement implements Element<String> {
 
     @Override
     public void addAttribute(Attribute attribute) {
-
+        this.addAttribute(attribute);
     }
 
     @Override

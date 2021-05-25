@@ -6,7 +6,7 @@ import net.hyjuki.smgen.gencode.java.base.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class BaseClass extends ClassTemplate {
+public abstract class BaseClass extends ClassAdapter {
     // 自己的类信息
     TypeClass typeClass;
 

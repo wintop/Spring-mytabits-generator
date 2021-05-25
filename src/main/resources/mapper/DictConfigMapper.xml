@@ -2,7 +2,7 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace = "net.hyjuki.genconfig.dao.DictConfigDao">
+<mapper namespace = "net.hyjuki.smgen.dao.DictConfigDao">
 	<resultMap type = "DictConfig" id = "DictConfigMap">
 		<result column = "id" property = "id" />
 		<result column = "value" property = "value" />
@@ -10,21 +10,23 @@
 		<result column = "label" property = "label" />
 		<result column = "sort" property = "sort" />
 		<result column = "parent_id" property = "parentId" />
-		<result column = "root" property = "root" />
+		<result column = "group_id" property = "groupId" />
+		<result column = "user_id" property = "userId" />
+		<result column = "create_time" property = "createTime" />
 	</resultMap>
 	
 	<sql id = "column_list">
 		id, value, type, label, 
-		sort, parent_id, root
+		sort, parent_id, group_id, user_id, create_time
 	</sql>
 	
 	<insert id = "save" parameterType = "DictConfig">
 		insert into dict_config (
 			value, type, label, sort, 
-			parent_id, root
+			parent_id, group_id, user_id, create_time
 		) values (
 			#{value}, #{type}, #{label}, #{sort}, 
-			#{parentId}, #{root}
+			#{parentId}, #{groupId}, #{userId}, #{createTime}
 		)
 	</insert>
 	
@@ -42,7 +44,41 @@
 			<if test = "label != null">and label = #{label}</if>
 			<if test = "sort != null">and sort = #{sort}</if>
 			<if test = "parentId != null">and parent_id = #{parentId}</if>
-			<if test = "root != null">and root = #{root}</if>
+			<if test = "groupId != null">and group_id = #{groupId}</if>
+			<if test = "userId != null">and user_id = #{userId}</if>
+			<if test = "createTime != null">and create_time = #{createTime}</if>
+		</where>
+	</select>
+	
+	<select id = "pagination" parameterType = "java.lang.Object" resultMap = "DictConfigMap">
+		select <include refid = "column_list" /> from dict_config
+		<where>
+			<if test = "t.id != null">and id = #{t.id}</if>
+			<if test = "t.value != null">and value = #{t.value}</if>
+			<if test = "t.type != null">and type = #{t.type}</if>
+			<if test = "t.label != null">and label = #{t.label}</if>
+			<if test = "t.sort != null">and sort = #{t.sort}</if>
+			<if test = "t.parentId != null">and parent_id = #{t.parentId}</if>
+			<if test = "t.groupId != null">and group_id = #{t.groupId}</if>
+			<if test = "t.userId != null">and user_id = #{t.userId}</if>
+			<if test = "t.createTime != null">and create_time = #{t.createTime}</if>
+		</where>
+		order by id desc
+		limit #{page.pageNo}, #{page.pageSize}
+	</select>
+	
+	<select id = "total" parameterType = "DictConfig" resultType = "java.lang.Long">
+		select count(*) from dict_config
+		<where>
+			<if test = "id != null">and id = #{id}</if>
+			<if test = "value != null">and value = #{value}</if>
+			<if test = "type != null">and type = #{type}</if>
+			<if test = "label != null">and label = #{label}</if>
+			<if test = "sort != null">and sort = #{sort}</if>
+			<if test = "parentId != null">and parent_id = #{parentId}</if>
+			<if test = "groupId != null">and group_id = #{groupId}</if>
+			<if test = "userId != null">and user_id = #{userId}</if>
+			<if test = "createTime != null">and create_time = #{createTime}</if>
 		</where>
 	</select>
 	
@@ -54,7 +90,9 @@
 			<if test = "label != null">label = #{label},</if>
 			<if test = "sort != null">sort = #{sort},</if>
 			<if test = "parentId != null">parent_id = #{parentId},</if>
-			<if test = "root != null">root = #{root},</if>
+			<if test = "groupId != null">group_id = #{groupId},</if>
+			<if test = "userId != null">user_id = #{userId},</if>
+			<if test = "createTime != null">create_time = #{createTime},</if>
 		</set>
 		where id = #{id}
 	</update>

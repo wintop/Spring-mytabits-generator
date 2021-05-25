@@ -1,5 +1,7 @@
 package net.hyjuki.smgen.base.dao;
 
+import net.hyjuki.smgen.base.common.Pageable;
+
 import java.io.Serializable;
 import java.util.List;
 
@@ -9,6 +11,6 @@ public interface BaseDao<T> {
 	int save(T t);
 	int update(T t);
 	int remove(Serializable id);
-	List<T> pagination(T t);
+	List<T> pagination(T t, Pageable page);
 	long total(T t);
 }

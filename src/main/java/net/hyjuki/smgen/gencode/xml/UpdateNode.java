@@ -1,7 +1,7 @@
 package net.hyjuki.smgen.gencode.xml;
 
 import net.hyjuki.smgen.base.utils.GenUtils;
-import net.hyjuki.smgen.db.TableColumn;
+import net.hyjuki.smgen.model.TableColumn;
 import net.hyjuki.smgen.db.PrimaryKey;
 import net.hyjuki.smgen.db.Table;
 import net.hyjuki.smgen.gencode.xml.base.MapperConstants;
@@ -13,13 +13,13 @@ import java.util.List;
 
 public class UpdateNode extends NodeElement {
     private String tableName;
-    private PrimaryKey key;
+    private List<PrimaryKey> keys;
     private List<TableColumn> columns = new ArrayList<TableColumn>();
 
     public UpdateNode(Table table) {
         super(MapperConstants.UPDATE);
         this.setTableName(table.getTableName());
-        this.setKey(table.getPrimaryKey());
+        this.setKey(table.getPrimaryKeys());
         this.setColumns(table.getColumns());
 
         setSeperator(GenUtils.lineAndIndent(1));
@@ -42,15 +42,15 @@ public class UpdateNode extends NodeElement {
         updateSetNode.setElement(this.columns);
         this.addElement(updateSetNode);
 
-        this.addElement(new WhereKeyElement(key));
+        this.addElement(new WhereKeyElement(keys));
     }
 
     public void setTableName(String tableName) {
         this.tableName = tableName;
     }
 
-    public void setKey(PrimaryKey key) {
-        this.key = key;
+    public void setKey(List<PrimaryKey> keys) {
+        this.keys = keys;
     }
 
     /**
@@ -62,9 +62,12 @@ public class UpdateNode extends NodeElement {
         // 主键中的数据不允许被update
         List<String> strKeys = new ArrayList<>();
 
-        strKeys.add(key.getColumnName());
+        for (PrimaryKey key: keys) {
+            strKeys.add(key.getColumnName());
+        }
+
         for (TableColumn column: columns) {
-            if (!strKeys.contains(column.getColumnName())) {
+            if (!strKeys.contains(column.getName())) {
                 this.columns.add(column);
             }
         }

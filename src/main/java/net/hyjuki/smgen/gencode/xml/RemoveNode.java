@@ -7,14 +7,16 @@ import net.hyjuki.smgen.gencode.xml.base.MapperConstants;
 import net.hyjuki.smgen.gencode.xml.base.NodeElement;
 import net.hyjuki.smgen.gencode.xml.base.TextElement;
 
+import java.util.List;
+
 public class RemoveNode extends NodeElement {
     private String tableName;
-    private PrimaryKey key;
+    private List<PrimaryKey> keys;
 
-    public RemoveNode(String tableName, PrimaryKey key) {
+    public RemoveNode(String tableName, List<PrimaryKey> keys) {
         super(MapperConstants.DELETE);
         this.tableName = tableName;
-        this.key = key;
+        this.keys = keys;
         this.setSeperator(GenUtils.lineAndIndent(1));
     }
 
@@ -28,15 +30,17 @@ public class RemoveNode extends NodeElement {
         textElement.addElement(MapperConstants.DELETE_FROM);
         textElement.addElement(tableName);
         this.addElement(textElement);
-        WhereKeyElement wke = new WhereKeyElement(key);
+        WhereKeyElement wke = new WhereKeyElement(keys);
         this.addElement(wke);
     }
 
     private void setAttributes() {
         this.addAttribute(MapperConstants.ID, MapperConstants.REMOVE);
-        if (key != null) {
-            this.addAttribute(MapperConstants.PARAMETER_TYPE,
-                    DbDataType.getInstance().getFullName(key.getDateType()));
+        if (keys != null) {
+            if (keys.size() == 1) {
+                this.addAttribute(MapperConstants.PARAMETER_TYPE,
+                        DbDataType.getInstance().getFullName(keys.get(0).getDateType()));
+            }
         }
     //    this.addAttribute(MapperConstants.RESULT_TYPE, Integer.class.getName());
     }

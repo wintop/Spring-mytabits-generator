@@ -1,18 +1,17 @@
 package net.hyjuki.smgen.controller;
 
+import net.hyjuki.smgen.base.utils.CommonUtils;
 import net.hyjuki.smgen.gencode.xml.base.Attribute;
 import net.hyjuki.smgen.db.*;
-
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 public class DemoTest {
     public static List<Attribute> list = new ArrayList<>();
     public static String str = "123";
-    public static void main(String[] args) throws SQLException {
+
+    public static void main(String[] args) throws Exception {
         String driver = "com.mysql.cj.jdbc.Driver";
-        String url = "jdbc:mysql://localhost:3306/my_test?serverTimezone=CTT&useUnicode=true&characterEncoding=utf-8";
+        String url = "jdbc:mysql://localhost:3306/hjk?serverTimezone=CTT&useUnicode=true&characterEncoding=utf-8";
         String user = "root";
         String password = "123456";
         String tabCat = "szmenu";
@@ -22,10 +21,18 @@ public class DemoTest {
 
         DbInformation dbInformation = new DbInformation(driver, url, user, password, tabCat);
         dbInformation.getConnection();
-//        List<Table> tables = dbInformation.getTables();
+        List<Table> tables = dbInformation.getTables();
 
-        Table table = dbInformation.getTable(tableName);
-        System.out.println(table);
+        Map<Object, Table> map = CommonUtils.listToMap(tables, Table.class.getDeclaredMethod("getTableName"));
+
+        for (Object obj: map.keySet()) {
+            System.out.println(map.get(obj).getTableName());
+        }
+
+        System.out.println(map);
+//
+//        Table table = dbInformation.getTable(tableName);
+//        System.out.println(table);
 //        tableName = table.getTableName();
 //        String resultMap = CommonUtils.getClassName(tableName) + MapperConstants.MAP;
 //        List<PrimaryKey> keys = table.getPrimaryKeys();

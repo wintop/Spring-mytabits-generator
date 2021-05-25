@@ -2,22 +2,24 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace = "net.hyjuki.genconfig.dao.DictInfoDao">
+<mapper namespace = "net.hyjuki.smgen.dao.DictInfoDao">
 	<resultMap type = "DictInfo" id = "DictInfoMap">
 		<result column = "id" property = "id" />
 		<result column = "name" property = "name" />
 		<result column = "type" property = "type" />
+		<result column = "user_id" property = "userId" />
+		<result column = "create_time" property = "createTime" />
 	</resultMap>
 	
 	<sql id = "column_list">
-		id, name, type
+		id, name, type, user_id, create_time
 	</sql>
 	
 	<insert id = "save" parameterType = "DictInfo">
 		insert into dict_info (
-			id, name, type
+			name, type, user_id, create_time
 		) values (
-			#{id}, #{name}, #{type}
+			#{name}, #{type}, #{userId}, #{createTime}
 		)
 	</insert>
 	
@@ -32,6 +34,32 @@
 			<if test = "id != null">and id = #{id}</if>
 			<if test = "name != null">and name = #{name}</if>
 			<if test = "type != null">and type = #{type}</if>
+			<if test = "userId != null">and user_id = #{userId}</if>
+			<if test = "createTime != null">and create_time = #{createTime}</if>
+		</where>
+	</select>
+	
+	<select id = "pagination" parameterType = "java.lang.Object" resultMap = "DictInfoMap">
+		select <include refid = "column_list" /> from dict_info
+		<where>
+			<if test = "t.id != null">and id = #{t.id}</if>
+			<if test = "t.name != null">and name = #{t.name}</if>
+			<if test = "t.type != null">and type = #{t.type}</if>
+			<if test = "t.userId != null">and user_id = #{t.userId}</if>
+			<if test = "t.createTime != null">and create_time = #{t.createTime}</if>
+		</where>
+		order by id desc
+		limit #{page.pageNo}, #{page.pageSize}
+	</select>
+	
+	<select id = "total" parameterType = "DictInfo" resultType = "java.lang.Long">
+		select count(*) from dict_info
+		<where>
+			<if test = "id != null">and id = #{id}</if>
+			<if test = "name != null">and name = #{name}</if>
+			<if test = "type != null">and type = #{type}</if>
+			<if test = "userId != null">and user_id = #{userId}</if>
+			<if test = "createTime != null">and create_time = #{createTime}</if>
 		</where>
 	</select>
 	
@@ -40,6 +68,8 @@
 		<set>
 			<if test = "name != null">name = #{name},</if>
 			<if test = "type != null">type = #{type},</if>
+			<if test = "userId != null">user_id = #{userId},</if>
+			<if test = "createTime != null">create_time = #{createTime},</if>
 		</set>
 		where id = #{id}
 	</update>

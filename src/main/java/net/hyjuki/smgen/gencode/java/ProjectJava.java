@@ -12,6 +12,7 @@ import net.hyjuki.smgen.gencode.java.base.JavaClass;
 import net.hyjuki.smgen.gencode.java.base.TypeClass;
 import net.hyjuki.smgen.gencode.xml.MapperXml;
 import net.hyjuki.smgen.gencode.xml.base.MapperConstants;
+import net.hyjuki.smgen.model.TableColumn;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -125,8 +126,8 @@ public class ProjectJava extends BaseProject {
         List<TableColumn> columns = table.getColumns();
 
         for (TableColumn column: columns) {
-            model.addElement(column.getColumnName(), TypeClass.getTypeClass(
-                    DbDataType.getInstance().getName(column.getDataType())), column.getRemarks());
+            model.addElement(column.getName(), TypeClass.getTypeClass(
+                    DbDataType.getInstance().getName(column.getDataType())), column.getComment());
         }
         model.genToStringMehtod();
 

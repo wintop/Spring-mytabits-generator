@@ -5,7 +5,7 @@ import net.hyjuki.smgen.base.utils.JavaConstants;
 import net.hyjuki.smgen.gencode.java.base.*;
 
 public class ServiceImpl extends BaseClass {
-    private ClassTemplate serviceImpl;
+    private ClassAdapter serviceImpl;
     private String genericName = JavaConstants.NAME_GENERIC_SERVICE;
     private String modelName;
     private String daoName;
@@ -18,7 +18,7 @@ public class ServiceImpl extends BaseClass {
         this.daoName = GenUtils.upperCase(modelName) + JavaConstants.NAME_DAO;
         this.serviceName = modelName + JavaConstants.NAME_SERVICE;
         this.implName = modelName + JavaConstants.NAME_SERVICE_IMPL;
-        serviceImpl = new ClassTemplate(Modifier.PUBLIC, ClassType.CLASS,
+        serviceImpl = new ClassAdapter(Modifier.PUBLIC, ClassType.CLASS,
                 implName, "",  extend, implement);
     }
 
@@ -34,7 +34,7 @@ public class ServiceImpl extends BaseClass {
         TypeClass extend = new TypeClass(genericName, GenUtils.concatPackage(pkgName, genericName), template);
         TypeClass implement = new TypeClass(serviceName, GenUtils.concatPackage(pkgName, serviceName));
 
-        serviceImpl = new ClassTemplate(Modifier.PUBLIC, ClassType.CLASS,
+        serviceImpl = new ClassAdapter(Modifier.PUBLIC, ClassType.CLASS,
                 implName, "", extend, implement);
     }
 

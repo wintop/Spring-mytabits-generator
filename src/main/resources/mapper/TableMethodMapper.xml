@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace = "net.hyjuki.smgen.dao.TableMethodDao">
+	<resultMap type = "TableMethod" id = "TableMethodMap">
+		<result column = "id" property = "id" />
+		<result column = "name" property = "name" />
+		<result column = "request_type" property = "requestType" />
+		<result column = "path_variable" property = "pathVariable" />
+		<result column = "table_id" property = "tableId" />
+		<result column = "db_id" property = "dbId" />
+		<result column = "user_id" property = "userId" />
+		<result column = "create_time" property = "createTime" />
+	</resultMap>
+	
+	<sql id = "column_list">
+		id, name, request_type, path_variable, 
+		table_id, db_id, user_id, create_time
+	</sql>
+	
+	<insert id = "save" parameterType = "TableMethod">
+		insert into table_method (
+			name, request_type, path_variable, table_id, 
+			db_id, user_id, create_time
+		) values (
+			#{name}, #{requestType}, #{pathVariable}, #{tableId}, 
+			#{dbId}, #{userId}, #{createTime}
+		)
+	</insert>
+	
+	<select id = "get" parameterType = "java.lang.Integer" resultMap = "TableMethodMap">
+		select <include refid = "column_list" /> from table_method
+		where id = #{id}
+	</select>
+	
+	<select id = "find" parameterType = "TableMethod" resultMap = "TableMethodMap">
+		select <include refid = "column_list" /> from table_method
+		<where>
+			<if test = "id != null">and id = #{id}</if>
+			<if test = "name != null">and name = #{name}</if>
+			<if test = "requestType != null">and request_type = #{requestType}</if>
+			<if test = "pathVariable != null">and path_variable = #{pathVariable}</if>
+			<if test = "tableId != null">and table_id = #{tableId}</if>
+			<if test = "dbId != null">and db_id = #{dbId}</if>
+			<if test = "userId != null">and user_id = #{userId}</if>
+			<if test = "createTime != null">and create_time = #{createTime}</if>
+		</where>
+	</select>
+	
+	<select id = "pagination" parameterType = "java.lang.Object" resultMap = "TableMethodMap">
+		select <include refid = "column_list" /> from table_method
+		<where>
+			<if test = "t.id != null">and id = #{t.id}</if>
+			<if test = "t.name != null">and name = #{t.name}</if>
+			<if test = "t.requestType != null">and request_type = #{t.requestType}</if>
+			<if test = "t.pathVariable != null">and path_variable = #{t.pathVariable}</if>
+			<if test = "t.tableId != null">and table_id = #{t.tableId}</if>
+			<if test = "t.dbId != null">and db_id = #{t.dbId}</if>
+			<if test = "t.userId != null">and user_id = #{t.userId}</if>
+			<if test = "t.createTime != null">and create_time = #{t.createTime}</if>
+		</where>
+		order by id desc
+		limit #{page.pageNo}, #{page.pageSize}
+	</select>
+	
+	<select id = "total" parameterType = "TableMethod" resultType = "java.lang.Long">
+		select count(*) from table_method
+		<where>
+			<if test = "id != null">and id = #{id}</if>
+			<if test = "name != null">and name = #{name}</if>
+			<if test = "requestType != null">and request_type = #{requestType}</if>
+			<if test = "pathVariable != null">and path_variable = #{pathVariable}</if>
+			<if test = "tableId != null">and table_id = #{tableId}</if>
+			<if test = "dbId != null">and db_id = #{dbId}</if>
+			<if test = "userId != null">and user_id = #{userId}</if>
+			<if test = "createTime != null">and create_time = #{createTime}</if>
+		</where>
+	</select>
+	
+	<update id = "update" parameterType = "TableMethod">
+		update table_method
+		<set>
+			<if test = "name != null">name = #{name},</if>
+			<if test = "requestType != null">request_type = #{requestType},</if>
+			<if test = "pathVariable != null">path_variable = #{pathVariable},</if>
+			<if test = "tableId != null">table_id = #{tableId},</if>
+			<if test = "dbId != null">db_id = #{dbId},</if>
+			<if test = "userId != null">user_id = #{userId},</if>
+			<if test = "createTime != null">create_time = #{createTime},</if>
+		</set>
+		where id = #{id}
+	</update>
+	
+	<delete id = "remove" parameterType = "java.lang.Integer">
+		delete from table_method
+		where id = #{id}
+	</delete>
+</mapper>

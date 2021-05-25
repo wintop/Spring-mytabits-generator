@@ -2,23 +2,29 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace = "net.hyjuki.genconfig.dao.TableIndexDao">
+<mapper namespace = "net.hyjuki.smgen.dao.TableIndexDao">
 	<resultMap type = "TableIndex" id = "TableIndexMap">
 		<result column = "id" property = "id" />
+		<result column = "table_id" property = "tableId" />
 		<result column = "name" property = "name" />
 		<result column = "type" property = "type" />
-		<result column = "col_name" property = "colName" />
+		<result column = "db_id" property = "dbId" />
+		<result column = "user_id" property = "userId" />
+		<result column = "create_time" property = "createTime" />
 	</resultMap>
 	
 	<sql id = "column_list">
-		id, name, type, col_name
+		id, table_id, name, type, 
+		db_id, user_id, create_time
 	</sql>
 	
 	<insert id = "save" parameterType = "TableIndex">
 		insert into table_index (
-			name, type, col_name
+			table_id, name, type, db_id, 
+			user_id, create_time
 		) values (
-			#{name}, #{type}, #{colName}
+			#{tableId}, #{name}, #{type}, #{dbId}, 
+			#{userId}, #{createTime}
 		)
 	</insert>
 	
@@ -31,18 +37,52 @@
 		select <include refid = "column_list" /> from table_index
 		<where>
 			<if test = "id != null">and id = #{id}</if>
+			<if test = "tableId != null">and table_id = #{tableId}</if>
 			<if test = "name != null">and name = #{name}</if>
 			<if test = "type != null">and type = #{type}</if>
-			<if test = "colName != null">and col_name = #{colName}</if>
+			<if test = "dbId != null">and db_id = #{dbId}</if>
+			<if test = "userId != null">and user_id = #{userId}</if>
+			<if test = "createTime != null">and create_time = #{createTime}</if>
+		</where>
+	</select>
+	
+	<select id = "pagination" parameterType = "java.lang.Object" resultMap = "TableIndexMap">
+		select <include refid = "column_list" /> from table_index
+		<where>
+			<if test = "t.id != null">and id = #{t.id}</if>
+			<if test = "t.tableId != null">and table_id = #{t.tableId}</if>
+			<if test = "t.name != null">and name = #{t.name}</if>
+			<if test = "t.type != null">and type = #{t.type}</if>
+			<if test = "t.dbId != null">and db_id = #{t.dbId}</if>
+			<if test = "t.userId != null">and user_id = #{t.userId}</if>
+			<if test = "t.createTime != null">and create_time = #{t.createTime}</if>
+		</where>
+		order by id desc
+		limit #{page.pageNo}, #{page.pageSize}
+	</select>
+	
+	<select id = "total" parameterType = "TableIndex" resultType = "java.lang.Long">
+		select count(*) from table_index
+		<where>
+			<if test = "id != null">and id = #{id}</if>
+			<if test = "tableId != null">and table_id = #{tableId}</if>
+			<if test = "name != null">and name = #{name}</if>
+			<if test = "type != null">and type = #{type}</if>
+			<if test = "dbId != null">and db_id = #{dbId}</if>
+			<if test = "userId != null">and user_id = #{userId}</if>
+			<if test = "createTime != null">and create_time = #{createTime}</if>
 		</where>
 	</select>
 	
 	<update id = "update" parameterType = "TableIndex">
 		update table_index
 		<set>
+			<if test = "tableId != null">table_id = #{tableId},</if>
 			<if test = "name != null">name = #{name},</if>
 			<if test = "type != null">type = #{type},</if>
-			<if test = "colName != null">col_name = #{colName},</if>
+			<if test = "dbId != null">db_id = #{dbId},</if>
+			<if test = "userId != null">user_id = #{userId},</if>
+			<if test = "createTime != null">create_time = #{createTime},</if>
 		</set>
 		where id = #{id}
 	</update>

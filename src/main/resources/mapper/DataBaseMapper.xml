@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace = "net.hyjuki.smgen.dao.DataBaseDao">
+	<resultMap type = "DataBase" id = "DataBaseMap">
+		<result column = "id" property = "id" />
+		<result column = "type" property = "type" />
+		<result column = "name" property = "name" />
+		<result column = "user_name" property = "userName" />
+		<result column = "password" property = "password" />
+		<result column = "host" property = "host" />
+		<result column = "port" property = "port" />
+		<result column = "driver" property = "driver" />
+		<result column = "char_set" property = "charSet" />
+		<result column = "user_id" property = "userId" />
+		<result column = "create_time" property = "createTime" />
+	</resultMap>
+	
+	<sql id = "column_list">
+		id, type, name, user_name, 
+		password, host, port, driver, 
+		char_set, user_id, create_time
+	</sql>
+	
+	<insert id = "save" parameterType = "DataBase">
+		insert into data_base (
+			type, name, user_name, password, 
+			host, port, driver, char_set, 
+			user_id, create_time
+		) values (
+			#{type}, #{name}, #{userName}, #{password}, 
+			#{host}, #{port}, #{driver}, #{charSet}, 
+			#{userId}, #{createTime}
+		)
+	</insert>
+	
+	<select id = "get" parameterType = "java.lang.Integer" resultMap = "DataBaseMap">
+		select <include refid = "column_list" /> from data_base
+		where id = #{id}
+	</select>
+	
+	<select id = "find" parameterType = "DataBase" resultMap = "DataBaseMap">
+		select <include refid = "column_list" /> from data_base
+		<where>
+			<if test = "id != null">and id = #{id}</if>
+			<if test = "type != null">and type = #{type}</if>
+			<if test = "name != null">and name = #{name}</if>
+			<if test = "userName != null">and user_name = #{userName}</if>
+			<if test = "password != null">and password = #{password}</if>
+			<if test = "host != null">and host = #{host}</if>
+			<if test = "port != null">and port = #{port}</if>
+			<if test = "driver != null">and driver = #{driver}</if>
+			<if test = "charSet != null">and char_set = #{charSet}</if>
+			<if test = "userId != null">and user_id = #{userId}</if>
+			<if test = "createTime != null">and create_time = #{createTime}</if>
+		</where>
+	</select>
+	
+	<select id = "pagination" parameterType = "java.lang.Object" resultMap = "DataBaseMap">
+		select <include refid = "column_list" /> from data_base
+		<where>
+			<if test = "t.id != null">and id = #{t.id}</if>
+			<if test = "t.type != null">and type = #{t.type}</if>
+			<if test = "t.name != null">and name = #{t.name}</if>
+			<if test = "t.userName != null">and user_name = #{t.userName}</if>
+			<if test = "t.password != null">and password = #{t.password}</if>
+			<if test = "t.host != null">and host = #{t.host}</if>
+			<if test = "t.port != null">and port = #{t.port}</if>
+			<if test = "t.driver != null">and driver = #{t.driver}</if>
+			<if test = "t.charSet != null">and char_set = #{t.charSet}</if>
+			<if test = "t.userId != null">and user_id = #{t.userId}</if>
+			<if test = "t.createTime != null">and create_time = #{t.createTime}</if>
+		</where>
+		order by id desc
+		limit #{page.pageNo}, #{page.pageSize}
+	</select>
+	
+	<select id = "total" parameterType = "DataBase" resultType = "java.lang.Long">
+		select count(*) from data_base
+		<where>
+			<if test = "id != null">and id = #{id}</if>
+			<if test = "type != null">and type = #{type}</if>
+			<if test = "name != null">and name = #{name}</if>
+			<if test = "userName != null">and user_name = #{userName}</if>
+			<if test = "password != null">and password = #{password}</if>
+			<if test = "host != null">and host = #{host}</if>
+			<if test = "port != null">and port = #{port}</if>
+			<if test = "driver != null">and driver = #{driver}</if>
+			<if test = "charSet != null">and char_set = #{charSet}</if>
+			<if test = "userId != null">and user_id = #{userId}</if>
+			<if test = "createTime != null">and create_time = #{createTime}</if>
+		</where>
+	</select>
+	
+	<update id = "update" parameterType = "DataBase">
+		update data_base
+		<set>
+			<if test = "type != null">type = #{type},</if>
+			<if test = "name != null">name = #{name},</if>
+			<if test = "userName != null">user_name = #{userName},</if>
+			<if test = "password != null">password = #{password},</if>
+			<if test = "host != null">host = #{host},</if>
+			<if test = "port != null">port = #{port},</if>
+			<if test = "driver != null">driver = #{driver},</if>
+			<if test = "charSet != null">char_set = #{charSet},</if>
+			<if test = "userId != null">user_id = #{userId},</if>
+			<if test = "createTime != null">create_time = #{createTime},</if>
+		</set>
+		where id = #{id}
+	</update>
+	
+	<delete id = "remove" parameterType = "java.lang.Integer">
+		delete from data_base
+		where id = #{id}
+	</delete>
+</mapper>

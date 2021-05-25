@@ -1,7 +1,7 @@
 package net.hyjuki.smgen.gencode.xml;
 
 import net.hyjuki.smgen.base.utils.GenUtils;
-import net.hyjuki.smgen.db.TableColumn;
+import net.hyjuki.smgen.model.TableColumn;
 import net.hyjuki.smgen.gencode.xml.base.MapperConstants;
 import net.hyjuki.smgen.gencode.xml.base.NodeElement;
 import net.hyjuki.smgen.gencode.xml.base.TextElement;
@@ -32,11 +32,11 @@ public class InsertNode extends NodeElement {
 
     private void renderColumnAndValue(List<TableColumn> columns) {
         for (TableColumn column: columns) {
-            if (column.getAutoIncrement()) {
+            if (column.getAutoIncrement() == 1) {
                 continue;
             }
-            columnList.addElement(column.getColumnName());
-            valueList.addElement(GenUtils.renderProperty(column.getColumnName()));
+            columnList.addElement(column.getName());
+            valueList.addElement(GenUtils.renderProperty(column.getName()));
         }
 
         columnList.setIndent(3);

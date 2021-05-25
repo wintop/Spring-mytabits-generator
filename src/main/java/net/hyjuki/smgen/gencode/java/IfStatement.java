@@ -7,7 +7,7 @@ import net.hyjuki.smgen.gencode.java.base.TypeClass;
 import java.util.List;
 
 public class IfStatement {
-    private String strIf = "if";
+    private static String strIf = "if";
 
     public static String paramIsNull(List<Parameter> parameters, TypeClass retType, TypeClass msgType) {
         if (GenUtils.isEmpty(parameters)) {

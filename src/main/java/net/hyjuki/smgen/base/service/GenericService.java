@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.List;
 
 import net.hyjuki.smgen.base.dao.BaseDao;
+import net.hyjuki.smgen.base.common.Pageable;
 
 public abstract class GenericService<T> implements BaseService<T> {
 	public abstract BaseDao<T> getBaseDao();
@@ -34,8 +35,8 @@ public abstract class GenericService<T> implements BaseService<T> {
 	}
 
 	@Override
-	public List<T> pagination(T t) {
-		return getBaseDao().pagination(t);
+	public List<T> pagination(T t, Pageable page) {
+		return getBaseDao().pagination(t, page);
 	}
 
 	@Override

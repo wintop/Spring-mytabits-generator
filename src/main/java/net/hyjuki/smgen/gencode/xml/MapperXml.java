@@ -5,6 +5,7 @@ import net.hyjuki.smgen.gencode.MethodConfig;
 import net.hyjuki.smgen.db.*;
 import net.hyjuki.smgen.base.utils.JavaConstants;
 import net.hyjuki.smgen.gencode.xml.base.*;
+import net.hyjuki.smgen.model.TableColumn;
 
 import java.util.List;
 
@@ -19,7 +20,7 @@ public class MapperXml extends NodeElement {
     private Table table;
     private String tableName;
     private String resultMap;
-    private PrimaryKey key;
+    private List<PrimaryKey> keys;
     private List<TableColumn> columns;
     private String className;
     private String namespace;
@@ -36,7 +37,7 @@ public class MapperXml extends NodeElement {
         this.tableName = table.getTableName();
         this.paramObjName = MapperConstants.PARAM_OBJ;
         setResultMap(GenUtils.getClassName(tableName) + "Map");
-        this.key = table.getPrimaryKey();
+        this.keys = table.getPrimaryKeys();
         this.columns = table.getColumns();
         this.className = GenUtils.getClassName(tableName);
         this.namespace = GenUtils.concatPackage(this.packageName, JavaConstants.DIR_DAO,
@@ -171,7 +172,7 @@ public class MapperXml extends NodeElement {
     public void setSelectGetNode() {
         // <select id = "get" ....> ... </select>
         SelectGetNode selectGetNode = new SelectGetNode(tableName, resultMap);
-        selectGetNode.setElements(key);
+        selectGetNode.setElements(keys);
         this.addElement(selectGetNode);
         this.addElement(renderLine());
     }
@@ -180,7 +181,7 @@ public class MapperXml extends NodeElement {
         // <select id = "get" ....> ... </select>
         SelectGetNode selectGetNode = new SelectGetNode(tableName, resultMap);
         selectGetNode.setSelectId(getId);
-        selectGetNode.setElements(key);
+        selectGetNode.setElements(keys);
         this.addElement(selectGetNode);
         this.addElement(renderLine());
     }
@@ -205,7 +206,7 @@ public class MapperXml extends NodeElement {
     public void setSelectPageNode() {
         // <select id = "find" ....> ... </select>
         SelectPageNode pageNode = new SelectPageNode(tableName, resultMap);
-        pageNode.setElements(this.paramObjName, columns, table.getPrimaryKey());
+        pageNode.setElements(this.paramObjName, columns, table.getPrimaryKeys());
         this.addElement(pageNode);
         this.addElement(renderLine());
     }
@@ -214,7 +215,7 @@ public class MapperXml extends NodeElement {
         // <select id = "find" ....> ... </select>
         SelectPageNode pageNode = new SelectPageNode(tableName, resultMap);
         pageNode.setSelectId(pageId);
-        pageNode.setElements(this.paramObjName, columns, table.getPrimaryKey());
+        pageNode.setElements(this.paramObjName, columns, table.getPrimaryKeys());
         this.addElement(pageNode);
         this.addElement(renderLine());
     }
@@ -256,14 +257,14 @@ public class MapperXml extends NodeElement {
 
     public void setRemoveNode() {
         // <delete id = "remove" ....> ... </delete>
-        RemoveNode removeNode = new RemoveNode(tableName, key);
+        RemoveNode removeNode = new RemoveNode(tableName, keys);
         removeNode.setElements();
         this.addElement(removeNode);
     }
 
     public void setRemoveNode(String removeId) {
         // <delete id = "remove" ....> ... </delete>
-        RemoveNode removeNode = new RemoveNode(tableName, key);
+        RemoveNode removeNode = new RemoveNode(tableName, keys);
         removeNode.setRemoveId(removeId);
         removeNode.setElements();
         this.addElement(removeNode);
